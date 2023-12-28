@@ -74,3 +74,45 @@ console.log (product.getProductById(0));
 
 //prueba de validacion de campo incompleto
 product.addProduct ('producto prueba', 'sin imagen', 'abc123', 25);
+
+
+
+//JSON
+/* [
+    {
+        "title": "Remera DC print",
+        "description": "Remera manga corta DC. Estampa en frente. Fit: Regular.",
+        "price": 17499,
+        "thumbnail": "https://www.cristobalcolon.com/fullaccess/item29329foto121240.jpg",
+        "code": 123,
+        "stock": 13,
+        "id": 0
+    },
+    {
+        "title": "Musculosa DC Star",
+        "description": "Musculosa DC Star estampa frontal, material algodón. Fit: Regular.",
+        "price": 14999,
+        "thumbnail": "https://www.cristobalcolon.com/fullaccess/item23218foto126359.jpg",
+        "code": 456,
+        "stock": 6,
+        "id": 1
+    },
+    {
+        "title": "Zapatillas DC Trase TX",
+        "description": "Parte superior Textil, Logotipo de impresión HD, Construcción Vulcanizada para una excelente sensación de la tabla y flexión de la suela de goma.",
+        "price": 64499,
+        "thumbnail": "https://www.cristobalcolon.com/fullaccess/item11932foto66204.jpg",
+        "code": 789,
+        "stock": 5,
+        "id": 2
+    },
+    {
+        "title": "Zapatillas DC Pure",
+        "description": "Zapatillas bajas Parte superior de cuero Forro con estampado gráfico Con cuello y lengüeta acolchados con espuma para mayor comodidad y sujeción Suela de copa de alto rendimiento Suela de goma adherente antiabrasiva.",
+        "price": 86999,
+        "thumbnail": "https://www.cristobalcolon.com/fullaccess/item14885foto70890.jpg",
+        "code": 159,
+        "stock": 7,
+        "id": 3
+    }
+] */
