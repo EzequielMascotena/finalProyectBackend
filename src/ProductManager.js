@@ -1,25 +1,9 @@
 const fs = require('fs')
 
-//leer
-const read = async () => {
-    try{
-        let res = await fs.promises.readFile ('./product.json', 'utf-8')
-        return JSON.parse(res)
-    }
-    catch (err) {
-        console.log('Error ', err)
-    }
-}
-
-//***************************************************/
-
-let data = JSON.parse(fs.readFileSync ('./product.json', 'utf-8'))
-
-
 class ProductManager {
     constructor () {
-        this.products = data
-        this.id = data.length;
+        this.products = JSON.parse(fs.readFileSync ('./product.json', 'utf-8'))
+        this.id = this.products.length;
         this.path = './product.json';
     }
 
@@ -109,8 +93,14 @@ class ProductManager {
             console.log (`Not found`);
         }
     }
-}
+};
 
+module.exports = ProductManager
+
+
+
+
+/*
 const product = new ProductManager()
 
 
@@ -122,7 +112,7 @@ console.log('-------------------------------------------');
 //agregrar productos
 product.addProduct ('producto prueba', 'este es un producto prueba', 200, 'sin imagen', 'abc123', 25); 
 product.addProduct ('producto prueba2', 'este es un producto prueba2', 2002, 'sin imagen2', 'abc1232', 252);
-//product.addProduct ('producto prueba3', 'este es un producto prueba3', 2003, 'sin imagen3', 'abc1233', 253);
+product.addProduct ('producto prueba3', 'este es un producto prueba3', 2003, 'sin imagen3', 'abc1233', 253);
 
 console.log('-------------------------------------------');
 
@@ -162,3 +152,5 @@ console.log('-------------------------------------------');
 //Eliminar producto y validacion de inexistencia
 product.deleteProduct(6)
 //product.deleteProduct(0)
+
+*/
