@@ -44,7 +44,8 @@ class ProductManager {
         if (product) {
             return product;
         } else {
-            throw new Error(`Producto con ID ${id} no encontrado.`);
+            console.log(`Error Producto con ID ${id} no encontrado.`);
+            return (`Error Producto con ID ${id} no encontrado.`)
         }
     }
 
