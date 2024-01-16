@@ -1,38 +1,19 @@
-const express = require ('express')
-const ProductManager = require ('./ProductManager')
+import express  from 'express'
+import routerProd from './routes/products.routes.js'
+import { __dirname } from './path.js'
+import path from 'path'
 
+const PORT= 8080
 const app = express()
-let products = new ProductManager ()
 
+//Middlewares
+app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
-app.get('/', (req, res)=> {
-    res.send ('Bienvenido')
-})
+//Routes
+app.use('/api/products', routerProd)
+app.use('/static', express.static(path.join(__dirname, '/public')))
 
-app.get('/products', (req, res)=> {
-    const limit = req.query.limit;
-    let response = products.getProducts();
-
-    if (limit) {
-        const limitNumber = parseInt(limit);
-        if (!isNaN(limitNumber) && limitNumber > 0) {
-            response = response.slice(0, limitNumber);
-        } else {
-            return res.json({ error: 'el parámetro indicado no es válido' });
-        }
-    }
-    res.send(response)
-})
-
-app.get('/products/:pid', (req, res)=> {
-    let pid = parseInt(req.params.pid)
-    let prFound= products.getProductById(pid)
-    res.send (prFound)
-})
-
-
-
-app.listen(8080, ()=> {
-    console.log ('Server run on port 8080')
+app.listen(PORT, ()=> {
+    console.log (`Server run on port ${PORT}`)
 })

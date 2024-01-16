@@ -1,28 +1,29 @@
-const fs = require('fs')
+import fs from 'fs';
+import uuid4 from 'uuid4';
 
-class ProductManager {
-    constructor () {
-        this.products = JSON.parse(fs.readFileSync ('./product.json', 'utf-8'))
-        this.id = this.products.length;
-        this.path = './product.json';
+export class ProductManager {
+    constructor(path) {
+        this.path = path;
     }
 
-    addProduct(title, description, price, thumbnail, code, stock){
-        
-        if (!validateRequiredFields(title, description, price, thumbnail, code, stock)) {
+    //title, description, price, thumbnail, code, stock
+    async addProduct(prod) {
+        const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
+
+        if (!validateRequiredFields(prod.title, prod.description, prod.price, prod.thumbnail, prod.code, prod.stock)) {
             return;
         }
 
-        if(!this.products.some((p) => p.code === code)){
-            let id = this.id ++
-            let newProduct = {title, description, price, thumbnail, code, stock, id};
-
-            this.products.push (newProduct);
-            fs.writeFileSync(this.path, JSON.stringify(this.products, null, 4),'utf-8')
-            console.log(`el producto ${title} se agrego correctamente.`)
-
+        if (!prods.some((p) => p.code === prod.code)) {
+            const id = uuid4();
+            prod.id = id;
+            prods.push(prod);
+            await fs.promises.writeFile(this.path, JSON.stringify(prods, null, 4), 'utf-8')
+            console.log(`el producto ${prod.title} se agrego correctamente.`)
+            return true
         } else {
-            console.log (`El Producto ${code} ya existe en la base de datos.`);
+            console.log(`El Producto ${prod.code} ya existe en la base de datos.`);
+            return false
         }
 
         function validateRequiredFields(title, description, price, thumbnail, code, stock) {
@@ -34,12 +35,14 @@ class ProductManager {
         }
     }
 
-    getProducts() {
-        return this.products;
+    async getProducts() {
+        const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
+        return prods
     }
 
-    getProductById(id){
-        let product = this.products.find ((p) => p.id === id);
+    async getProductById(id) {
+        const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
+        let product = prods.find((p) => p.id === id);
 
         if (product) {
             return product;
@@ -49,54 +52,50 @@ class ProductManager {
         }
     }
 
-    updateProduct(id, field, changes) {
-        let product = this.products.find ((p) => p.id === id);
-
-        if (product) {
-            if (product.hasOwnProperty(field)) {
-                product[field] = changes;
-                const write = async () => {
-                    try{
-                        await fs.promises.writeFile (this.path, JSON.stringify(this.products, null, 4),'utf-8')
-                        console.log(`el producto se modifico correctamente.`)
-                    }
-                    catch (err) {
-                        console.log('Error ', err)
-                    }
-                }
-                write()
+    async updateProduct(id, producto) {
+        try {
+            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'));
+    
+            const index = prods.findIndex((p) => p.id === id);
+    
+            if (index !== -1) {
+                prods[index].title = producto.title;
+                prods[index].description = producto.description;
+                prods[index].price = producto.price;
+                prods[index].stock = producto.stock;
+                prods[index].thumbnail = producto.thumbnail;
+                prods[index].code = producto.code;
+    
+                await fs.promises.writeFile(this.path, JSON.stringify(prods, null, 4), 'utf-8');
+    
+                return true;
             } else {
-                console.log(`El campo ${field} no existe en el producto.`);
+                console.log(`No se encontró un producto con el ID ${id}`);
+                return false;
             }
-        } else {
-            console.log(`Producto con ID ${id} no encontrado.`);
+        } catch (error) {
+            console.error('Error al leer o escribir en el archivo:', error);
+            return false;
         }
     }
 
 
-    deleteProduct(id){
-        let product = this.products.find ((p) => p.id === id);
+
+    async deleteProduct(id) {
+        const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
+        let product = prods.find((p) => p.id === id);
 
         if (product) {
-            this.products.splice(id,1);
-            const write = async () => {
-                try{
-                    await fs.promises.writeFile (this.path, JSON.stringify(this.products, null, 4),'utf-8')
-                    console.log(`el producto se elimino correctamente.`)
-                }
-                catch (err) {
-                    console.log('Error ', err)
-                }
-            }
-            write()
-
+            await fs.promises.writeFile(this.path, JSON.stringify(prods.filter(product => product.id !== id), null, 4), 'utf-8')
+            console.log(`el producto ${product.id} se elimino correctamente.`)
+            return true
         } else {
-            console.log (`Not found`);
+            console.log(`Not found`);
+            return false
         }
     }
 };
 
-module.exports = ProductManager
 
 
 
