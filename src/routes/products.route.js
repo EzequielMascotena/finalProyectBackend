@@ -40,9 +40,9 @@ routerProd.post ("/", async (req, res)=>{
     }
 })
 
-routerProd.put ("/:id", async (req, res)=>{
-    const {id} = req.params
-    const conf = await productManager.updateProduct(id, req.body)
+routerProd.put ("/:pid", async (req, res)=>{
+    const {pid} = req.params
+    const conf = await productManager.updateProduct(pid, req.body)
     if (conf) {
         res.status(200).send("El Producto se modificó correctamente")
     } else {
@@ -50,9 +50,9 @@ routerProd.put ("/:id", async (req, res)=>{
     }
 })
 
-routerProd.delete ("/:id", async (req, res)=>{
-    const {id} = req.params
-    const conf = await productManager.deleteProduct(id)
+routerProd.delete ("/:pid", async (req, res)=>{
+    const {pid} = req.params
+    const conf = await productManager.deleteProduct(pid)
     if (conf) {
         res.status(200).send("El Producto se eliminó correctamente")
     } else {
