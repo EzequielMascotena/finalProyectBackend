@@ -1,5 +1,4 @@
-import { fileURLToPath } from 'url'
-import { dirname } from 'path'
+const { fileURLToPath } = require('url');
 
-export const __filename = fileURLToPath (import.meta.url)
-export const __dirname = dirname (__filename)
+exports.__filename = fileURLToPath(import.meta.url);
+exports.__dirname = __dirname;
