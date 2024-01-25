@@ -1,0 +1,78 @@
+<div class="row g-0 m-2 p-2">
+    <h1>Real Time Products:</h1>
+    <div class="col-md-6 p-2">
+        <form onsubmit="return addNewProdInfo()" class="rounded-1 m-2 p-2 text-bg-dark">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">TITLE</span>
+                <input type="text" class="form-control" id="title" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Description</span>
+                <input type="text" class="form-control" id="description" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Price</span>
+                <span class="input-group-text">$</span>
+                <input type="number" class="form-control" id="price"
+                    aria-label="Dollar amount (with dot and two decimal places)">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Stock</span>
+                <input type="number" class="form-control" id="stock" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Category</span>
+                <input type="text" class="form-control" id="category" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default">
+            </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupFile01">Upload Images</label>
+                <input type="file" class="form-control" id="inputGroupFile01">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Code</span>
+                <input type="text" class="form-control" id="code" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default">
+            </div>
+            <button type="submit" class="btn btn-success">Agregar Producto</button>
+        </form>
+
+        <form onsubmit="return deleteProdInfo()" class=" rounded-1 m-2 p-2 text-bg-dark">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">ID</span>
+                <input type="text" class="form-control" id="id" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default">
+            </div>
+            <button type="submit" class="btn btn-danger">Eliminar Producto</button>
+        </form>
+    </div>
+
+    <div class="col-md-6 p-2 ">
+            <div id="listaProds" class="prodsBox container">
+                {{#each products}}
+                <div class="card text-bg-dark mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="" class="img-fluid rounded-start" alt="">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-header">{{this.category}}</div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{this.title}}</h5>
+                                <strong>ID:</strong> {{this.id}}
+                                <p class="card-text">{{this.description}}</p>
+                                <strong>Precio:</strong> {{this.price}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realTimeProducts.js"></script>

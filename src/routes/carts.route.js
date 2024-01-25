@@ -3,7 +3,7 @@ const CartManager  = require ('../CartManager')
 
 const cartManager = new CartManager ('./carrito.json')
 
-const routerCart = Router()
+const routerCart = new Router()
 
 // Crear carrito nuevo
 routerCart.post("/", async (req, res) => {

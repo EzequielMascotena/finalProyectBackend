@@ -3,7 +3,7 @@ const ProductManager  = require ('../ProductManager')
 
 const productManager = new ProductManager ('./products.json')
 
-const routerProd = Router()
+const routerProd = new Router()
 
 routerProd.get ("/", async (req, res)=>{
     const limit = req.query.limit;
