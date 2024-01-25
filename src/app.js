@@ -47,6 +47,16 @@ io.on('connection', (socket) => {
             console.error('Error al agregar producto:', error);
         }
     });
+
+    socket.on('deleteProdInfo', async (data) => {
+        try {
+            await productManager.deleteProduct(data.id);   
+            const updatedProducts = await productManager.getProducts();
+            socket.emit('prodsToRender', updatedProducts);
+        } catch (error) {
+            console.error('Error al eliminar producto:', error);
+        }
+    });
 })
 
 server.listen(PORT, () => {

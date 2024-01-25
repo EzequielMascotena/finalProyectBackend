@@ -1,5 +1,6 @@
 const socket = io ()
 
+//agregar prod en tiempo real
 const addNewProdInfo = () => {
     const info = {
         title : document.getElementById('title').value,
@@ -42,4 +43,13 @@ const render = (data) => {
         )
     }).join(' ')
     document.getElementById('listaProds').innerHTML= html
+}
+
+//eliminar prod en tiempo real
+const deleteProdInfo = () => {
+    const info = {
+        id : document.getElementById('prodId').value,
+    }
+    socket.emit('deleteProdInfo', info)
+    return false
 }
