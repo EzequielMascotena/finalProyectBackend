@@ -7,8 +7,8 @@ const routerCart = new Router()
 
 // Crear carrito nuevo
 routerCart.post("/", async (req, res) => {
-    await cartManager.addCart()
-    res.status(201).send("Carrito creado correctamente.")
+    const newCartId = await cartManager.addCart();
+    res.status(201).send(`Carrito creado correctamente id ` + newCartId);
 })
 
 //obtener carrito por id

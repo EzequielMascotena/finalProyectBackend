@@ -17,6 +17,7 @@ class CartManager {
         };
         existingCarts.push(newCart);
         await fs.promises.writeFile(this.path, JSON.stringify(existingCarts, null, 4), 'utf-8')
+        return (newCart.id)
     }
 
 
