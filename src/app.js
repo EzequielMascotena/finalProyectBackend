@@ -1,4 +1,5 @@
 const express = require('express');
+const Database = require ('./dao/db/db.js');
 const handlebars = require('express-handlebars');
 const routerHome = require('./routes/home.route.js');
 const routerProd = require('./routes/products.route.js');
@@ -9,7 +10,7 @@ const { Server } = require('socket.io')
 const PORT = 8080 || process.env.PORT
 const app = express()
 
-const ProductManager = require('./ProductManager.js');
+const ProductManager = require('./dao/fileSystem/ProductManager.js');
 const productManager = new ProductManager('./products.json')
 
 
@@ -61,4 +62,5 @@ io.on('connection', (socket) => {
 
 server.listen(PORT, () => {
     console.log(`Server run on port ${PORT}`)
+    Database.connect()
 })

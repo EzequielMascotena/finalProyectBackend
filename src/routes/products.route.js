@@ -1,11 +1,112 @@
 const { Router } = require('express');
-const ProductManager  = require ('../ProductManager')
 
-const productManager = new ProductManager ('./products.json')
+//FS
+//const ProductManager  = require ('../dao/fileSystem/ProductManager')
+//const productManager = new ProductManager ('./products.json')
+
+//Mongoose
+const ProductManagerMongo = require('../dao/db/managers/productManager');
 
 const routerProd = new Router()
+const productManager = new ProductManagerMongo();
 
-routerProd.get ("/", async (req, res)=>{
+routerProd.get("/", async (req, res) => {
+    try {
+        const limit = req.query.limit;
+        let response = await productManager.getProducts();
+
+        if (limit) {
+            const limitNumber = parseInt(limit);
+            if (!isNaN(limitNumber) && limitNumber > 0) {
+                response = response.slice(0, limitNumber);
+            } else {
+                return res.status(400).json({ error: 'El parámetro indicado no es válido' });
+            }
+        }
+        res.status(200).send(response);
+    } catch (error) {
+        console.error('Error al obtener los productos:', error);
+        res.status(500).json({ error: 'Ocurrió un error al obtener los productos' });
+    }
+});
+
+routerProd.get("/:id", async (req, res) => {
+    try {
+        const { id } = req.params
+        let prod = await productManager.getProductById(id)
+
+        if (prod === true) {
+            res.status(200).send(prod)
+        } else {
+            res.status(404).send(prod)
+        }
+    } catch (err) {
+        console.error('Error al buscar el producto:', err);
+        res.status(404).send({
+            error: 'Ocurrió un error al buscar el producto'
+        });
+    }
+})
+
+routerProd.post("/", async (req, res) => {
+    try {
+        const conf = await productManager.addProduct(req.body)
+        if (conf === true) {
+            res.status(201).send({
+                msg: 'Producto creado correctamente',
+                data: req.body
+            })
+        } else
+            res.status(400).send(conf)
+    } catch (err) {
+        console.error('Error al crear el producto:', err);
+        res.status(500).send({
+            error: 'Ocurrió un error al crear el producto'
+        });
+    }
+})
+
+routerProd.put("/:pid", async (req, res) => {
+    try {
+        const { pid } = req.params;
+        const conf = await productManager.updateProduct(pid, req.body);
+        if (conf.res === true) {
+            res.status(200).send({
+                msg: conf.msg,
+                data: conf.data
+            });
+        } else {
+            res.status(404).send(`El producto con id ${pid} no existe`);
+        }
+    } catch (err) {
+        res.status(500).send({
+            error: 'Ocurrió un error al intentar modificar el producto'
+        });
+    }
+});
+
+routerProd.delete("/:pid", async (req, res) => {
+    try{
+        const { pid } = req.params
+        const resp = await productManager.deleteProduct(pid)
+        res.status(200).send(resp)
+    } catch (err) {
+        res.status(404).send({
+            msg: resp,
+            error: err
+        });
+    }
+})
+
+module.exports = routerProd;
+
+
+
+
+
+
+//rutas y metodos para FS
+/* routerProd.get ("/", async (req, res)=>{
     const limit = req.query.limit;
     let response = await productManager.getProducts()
 
@@ -59,6 +160,4 @@ routerProd.delete ("/:pid", async (req, res)=>{
         res.status(404).send("Producto no encontrado")
     }
 
-})
-
-module.exports = routerProd;
+}) */
