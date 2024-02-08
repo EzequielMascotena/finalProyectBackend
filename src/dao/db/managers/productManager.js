@@ -5,7 +5,7 @@ class ProductManagerMongo {
         this.path = path;
     }
 
-    //agregar producto OK
+    //agregar producto
     async addProduct(prod) {
         try {
             prod.status = true;
@@ -17,32 +17,33 @@ class ProductManagerMongo {
         }
     }
 
-    //obtener todos los prods OK
+    //obtener todos los prods
     async getProducts() {
         try {
             let resp = await Products.find()
-            return ({
-                msg: 'Productos encontrados',
-                data: resp
-            })
+            return (resp)
         } catch (err) {
             console.log(err)
         }
     }
 
-    //obtener producto por id  OK
+    //obtener producto por id
     async getProductById(id) {
         try {
             let product = await Products.findById(id)
-            return ({
-                msg: 'Producto encontrado',
-                data: product
-            })
+            if(product){
+                return ({
+                    msg: 'Producto encontrado',
+                    data: product
+                })
+            } else {
+                return ({
+                    msg: 'Producto NO encontrado',
+                    data: `el ID ${id} no existe en la Base de Datos`
+                })
+            }
         } catch (err) {
-            return ({
-                msg: 'Producto NO encontrado',
-                data: `${err.message}, el ID ${err.value} no existe en la Base de Datos`
-            })
+            return (`Error al buscar el producto, ${err}`)
         }
     }
 
@@ -81,10 +82,17 @@ class ProductManagerMongo {
     // borrar un prod por id
     async deleteProduct(id) {
         try{
-            await Products.deleteOne({_id:id})
-            return(`El producto con el id ${id} se eliminó correctamente.`)
+            const prods = await Products.find()
+            let exist = prods.find((p) => p.id === id);
+
+            if(exist){
+                await Products.deleteOne({_id:id})
+                return(`El producto con el id ${id} se eliminó correctamente.`)
+            } else {
+                return (`El producto con el id ${id} es inexistente. Not found`)
+            }
         } catch (err){
-            return (`El producto con el id ${id} es inexistente. ${err}`)
+            return (`error al intentar eliminar producto: ${err}`)
         }
     }
 };

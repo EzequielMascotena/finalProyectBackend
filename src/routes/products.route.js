@@ -36,13 +36,14 @@ routerProd.get("/:id", async (req, res) => {
         let prod = await productManager.getProductById(id)
 
         if (prod === true) {
+            console.log(prod)
             res.status(200).send(prod)
         } else {
             res.status(404).send(prod)
         }
     } catch (err) {
         console.error('Error al buscar el producto:', err);
-        res.status(404).send({
+        res.status(500).send({
             error: 'Ocurrió un error al buscar el producto'
         });
     }
