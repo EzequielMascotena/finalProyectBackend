@@ -10,11 +10,6 @@ const { Server } = require('socket.io')
 const PORT = 8080 || process.env.PORT
 const app = express()
 
-const ProductManager = require('./dao/fileSystem/ProductManager.js');
-const productManager = new ProductManager('./products.json')
-
-
-
 //Server HTTP
 const server = http.createServer(app)
 
