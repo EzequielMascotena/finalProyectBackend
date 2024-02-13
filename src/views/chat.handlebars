@@ -1,14 +1,28 @@
-<div class="container mt-3">
-    <h1>Chat</h1>
-    <form>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+<div class="chat">
+    <div class="container mt-3">
+        <div>
+            <h1>Chat</h1>
         </div>
-        <div class="mb-3">
-            <label for="text" class="form-label">Password</label>
-            <textarea class="form-control" id="exampleInputPassword1">
+        <div id="caja" class="caja m-3">
+            {{#each chat}}
+            <div>
+                <strong>{{this.user}}</strong> dice <em> {{this.message}}</em>
+            </div>
+            {{/each}}
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+
+        <form class="m-3" onsubmit="return addMenssage()">
+            <div class="mb-3">
+                <input type="email" class="form-control" id="email" placeholder="Email">
+            </div>
+            <div class="mb-3">
+                <textarea name="" cols="30" rows="2" class="form-control" id="message"
+                    placeholder="tu mensaje"></textarea>
+            </div>
+            <input type="submit" value="Enviar" class="btn btn-success">
+        </form>
+    </div>
 </div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/chat.js"></script>

@@ -20,7 +20,7 @@ class ProductManagerMongo {
     //obtener todos los prods
     async getProducts() {
         try {
-            let resp = await Products.find()
+            let resp = await Products.find().lean()
             return (resp)
         } catch (err) {
             console.log(err)

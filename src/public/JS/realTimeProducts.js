@@ -1,3 +1,4 @@
+//socket del lado del cliente
 const socket = io ()
 
 //agregar prod en tiempo real
@@ -12,6 +13,15 @@ const addNewProdInfo = () => {
         code : document.getElementById('code').value
     }
     socket.emit('addProdInfo', info)
+
+    // Limpiar los campos del formulario
+    document.getElementById('title').value = '';
+    document.getElementById('description').value = '';
+    document.getElementById('price').value = '';
+    document.getElementById('stock').value = '';
+    document.getElementById('category').value = '';
+    document.getElementById('inputGroupFile01').value = '';
+    document.getElementById('code').value = '';
     return false
 }
 
@@ -33,7 +43,7 @@ const render = (data) => {
                     <div class="card-header">${el.category}</div>
                     <div class="card-body">
                         <h5 class="card-title">${el.title}</h5>
-                        <strong>ID:</strong> ${el.id}
+                        <strong>ID:</strong> ${el._id}
                         <p class="card-text">${el.description}</p>
                         <strong>Precio:</strong> ${el.price}
                     </div>
@@ -51,5 +61,7 @@ const deleteProdInfo = () => {
         id : document.getElementById('prodId').value,
     }
     socket.emit('deleteProdInfo', info)
+
+    document.getElementById('prodId').value = '';
     return false
 }

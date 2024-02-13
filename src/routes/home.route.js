@@ -5,20 +5,23 @@ const { Router } = require('express');
 
 //Mongoose
 const ProductManagerMongo = require('../dao/db/managers/ProductManager');
-const productManager= new ProductManagerMongo();
+const productManager = new ProductManagerMongo();
+
+const ChatManagerMongo = require('../dao/db/managers/ChatManager');
+const chatManager = new ChatManagerMongo();
 
 const router = new Router()
 
 async function obtenerProductos() {
-    try{
+    try {
         return await productManager.getProducts();
-    } catch (err){
+    } catch (err) {
         return `error al obtener Productos: ${err}`
     }
 }
 
 router.get('/', async (req, res) => {
-    try{
+    try {
         const products = await obtenerProductos();
         const datos = { products };
         res.render('home.handlebars', datos)
@@ -35,8 +38,22 @@ router.get('/realtimeproducts', async (req, res) => {
 })
 
 //chat con socket
-router.get('/chat', async (req, res)=>{
-    res.render('chat.handlebars', {})
+async function obtenerMsgs() {
+    try {
+        return await chatManager.getChat();
+    } catch (err) {
+        return `error al obtener los Mensajes de la BD: ${err}`
+    }
+}
+
+router.get('/chat', async (req, res) => {
+    try {
+        const chat = await obtenerMsgs();
+        const datos = { chat };
+        res.render('chat.handlebars', datos)
+    } catch (err) {
+        return `error al intentar obtener los Mensajes: ${err}`
+    }
 })
 
 
