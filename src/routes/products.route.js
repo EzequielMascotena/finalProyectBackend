@@ -7,8 +7,12 @@ const { Router } = require('express');
 //Mongoose
 const ProductManagerMongo = require('../dao/db/managers/ProductManager');
 
+//const Products = require('../dao/db/models/product.model')
+
 const routerProd = new Router()
 const productManager = new ProductManagerMongo();
+
+
 
 routerProd.get("/", async (req, res) => {
     try {
