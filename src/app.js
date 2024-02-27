@@ -9,7 +9,7 @@ const http = require('http')
 
 //Socket
 const { Server } = require('socket.io')
-const socketService = require ('./socket/index.js')
+const socketService = require('./socket/index.js')
 
 const PORT = 8080 || process.env.PORT
 const app = express()
@@ -36,7 +36,7 @@ app.use('/api/carts', routerCart)
 
 //Socket
 const io = new Server(server)
-io.on ('connection', (socket)=> socketService(socket, io))
+io.on('connection', (socket) => socketService(socket, io))
 
 server.listen(PORT, () => {
     console.log(`Server run on port ${PORT}`)

@@ -22,22 +22,22 @@ routerProd.get("/", async (req, res) => {
         const sort = req.query.sort;
 
         let request = await productManager.getProducts(page, limit, query, sort);
-        const response ={
-            status : "success",
-            payload : request.docs,
+        const response = {
+            status: "success",
+            payload: request.docs,
             totalPages: request.totalPages,
-            page: request.page ,
+            page: request.page,
             pagingCounter: request.pagingCounter,
             hasPrevPage: request.hasPrevPage,
-            hasNextPage:request.hasNextPage,
+            hasNextPage: request.hasNextPage,
             nextPage: `localhost:8080/products?limit=${request.limit}&page=${request.nextPage}`,
-            prevPage: `localhost:8080/products?limit=${request.limit}&page=${request.prevPage}` 
+            prevPage: `localhost:8080/products?limit=${request.limit}&page=${request.prevPage}`
         }
-        
+
         res.status(200).send(response);
     } catch (error) {
-        res.status(500).send({ 
-            status : "error",
+        res.status(500).send({
+            status: "error",
             error: `Ocurrió un error al obtener los productos: ${error}`
         });
     }
@@ -100,7 +100,7 @@ routerProd.put("/:pid", async (req, res) => {
 });
 
 routerProd.delete("/:pid", async (req, res) => {
-    try{
+    try {
         const { pid } = req.params
         const resp = await productManager.deleteProduct(pid)
         res.status(200).send(resp)

@@ -15,15 +15,15 @@ const addMenssage = () => {
     return false
 }
 
-socket.on ('allMsgs', (data)=>{
+socket.on('allMsgs', (data) => {
     render(data)
     let chat = document.getElementById('caja')
     chat.scrollTop = chat.scrollHeight
 })
 
 const render = (data) => {
-    const html = data.map(el=> {
-        return(
+    const html = data.map(el => {
+        return (
             `
             <div>
                 <strong>${el.user}</strong> dice <em> ${el.message} </em>
@@ -31,5 +31,5 @@ const render = (data) => {
             `
         )
     }).join(' ')
-    document.getElementById('caja').innerHTML= html
+    document.getElementById('caja').innerHTML = html
 }

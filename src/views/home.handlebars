@@ -1,25 +1,25 @@
 <div class="container">
     <h1>Todos los productos:</h1>
     <div class="col-md-6 p-2 ">
-            <div id="listaProds" class="container">
-                {{#each products}}
-                <div class="card text-bg-dark mb-3" style="max-width: 540px;">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="" class="img-fluid rounded-start" alt="">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-header">{{category}}</div>
-                            <div class="card-body">
-                                <h5 class="card-title">{{title}}</h5>
-                                <strong>ID:</strong> {{_id}}
-                                <p class="card-text">{{description}}</p>
-                                <strong>Precio:</strong> {{price}}
-                            </div>
+        <div id="listaProds" class="container">
+            {{#each products}}
+            <div class="card text-bg-dark mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="" class="img-fluid rounded-start" alt="">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-header">{{category}}</div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{title}}</h5>
+                            <strong>ID:</strong> {{_id}}
+                            <p class="card-text">{{description}}</p>
+                            <strong>Precio:</strong> {{price}}
                         </div>
                     </div>
                 </div>
-                {{/each}}
             </div>
+            {{/each}}
+        </div>
     </div>
 </div>

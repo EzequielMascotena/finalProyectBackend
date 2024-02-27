@@ -44,10 +44,10 @@ class CartManager {
                 console.log(`Error: no encontramos el Carrito con ID ${cid}.`);
                 return (`Error: no encontramos el Carrito con ese ID.`);
             }
-    
+
             const prods = cart.products
             const existingProduct = prods.find((p) => p.product === pid);
-    
+
             if (!existingProduct) {
                 const newProduct = {
                     product: pid,
@@ -57,7 +57,7 @@ class CartManager {
             } else {
                 existingProduct.quantity++;
             }
-    
+
             await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 4), 'utf-8');
             console.log(`Producto ${pid} agregado al carrito ${cid} correctamente.`);
         } catch (error) {

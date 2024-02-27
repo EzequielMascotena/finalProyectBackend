@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const mongoPaginate = require ('mongoose-paginate-v2')
+const mongoPaginate = require('mongoose-paginate-v2')
 
 const ProductSchema = new mongoose.Schema({
     title: {
@@ -21,7 +21,7 @@ const ProductSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ['shoes','remeras','camperas','jeans','buzos'] 
+        enum: ['shoes', 'remeras', 'camperas', 'jeans', 'buzos']
     },
     thumbnail: {
         type: Array,
@@ -35,6 +35,6 @@ const ProductSchema = new mongoose.Schema({
 
 ProductSchema.plugin(mongoPaginate)
 
-const Products = mongoose.model ('products', ProductSchema)
+const Products = mongoose.model('products', ProductSchema)
 
 module.exports = Products

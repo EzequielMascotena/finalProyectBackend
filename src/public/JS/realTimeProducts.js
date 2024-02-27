@@ -1,16 +1,16 @@
 //socket del lado del cliente
-const socket = io ()
+const socket = io()
 
 //agregar prod en tiempo real
 const addNewProdInfo = () => {
     const info = {
-        title : document.getElementById('title').value,
-        description : document.getElementById('description').value,
-        price : document.getElementById('price').value,
-        stock : document.getElementById('stock').value,
-        category : document.getElementById('category').value,
-        thumbnail : document.getElementById('inputGroupFile01').value,
-        code : document.getElementById('code').value
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value,
+        price: document.getElementById('price').value,
+        stock: document.getElementById('stock').value,
+        category: document.getElementById('category').value,
+        thumbnail: document.getElementById('inputGroupFile01').value,
+        code: document.getElementById('code').value
     }
     socket.emit('addProdInfo', info)
 
@@ -25,15 +25,15 @@ const addNewProdInfo = () => {
     return false
 }
 
-socket.on ('prodsToRender', (data)=>{
+socket.on('prodsToRender', (data) => {
     render(data)
     let ult = document.getElementById('listaProds')
     ult.scrollTop = ult.scrollHeight
 })
 
 const render = (data) => {
-    const html = data.map(el=> {
-        return(
+    const html = data.map(el => {
+        return (
             `<div class="card text-bg-dark mb-3" style="max-width: 540px;">
             <div class="row g-0">
                 <div class="col-md-4">
@@ -52,13 +52,13 @@ const render = (data) => {
         </div>`
         )
     }).join(' ')
-    document.getElementById('listaProds').innerHTML= html
+    document.getElementById('listaProds').innerHTML = html
 }
 
 //eliminar prod en tiempo real
 const deleteProdInfo = () => {
     const info = {
-        id : document.getElementById('prodId').value,
+        id: document.getElementById('prodId').value,
     }
     socket.emit('deleteProdInfo', info)
 

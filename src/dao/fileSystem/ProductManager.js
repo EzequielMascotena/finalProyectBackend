@@ -59,9 +59,9 @@ class ProductManager {
     async updateProduct(id, producto) {
         try {
             const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'));
-    
+
             const index = prods.findIndex((p) => p.id === id);
-    
+
             if (index !== -1) {
                 prods[index].title = producto.title;
                 prods[index].description = producto.description;
@@ -70,9 +70,9 @@ class ProductManager {
                 prods[index].category = producto.category
                 prods[index].thumbnail = producto.thumbnail;
                 prods[index].code = producto.code;
-    
+
                 await fs.promises.writeFile(this.path, JSON.stringify(prods, null, 4), 'utf-8');
-    
+
                 return true;
             } else {
                 console.log(`No se encontró un producto con el ID ${id}`);
