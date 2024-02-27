@@ -16,21 +16,30 @@ const productManager = new ProductManagerMongo();
 
 routerProd.get("/", async (req, res) => {
     try {
+        const page = req.query.page;
         const limit = req.query.limit;
-        let response = await productManager.getProducts();
+        const query = req.query.query;
+        const sort = req.query.sort;
 
-        if (limit) {
-            const limitNumber = parseInt(limit);
-            if (!isNaN(limitNumber) && limitNumber > 0) {
-                response = response.slice(0, limitNumber);
-            } else {
-                return res.status(400).json({ error: 'El parámetro indicado no es válido' });
-            }
+        let request = await productManager.getProducts(page, limit, query, sort);
+        const response ={
+            status : "success",
+            payload : request.docs,
+            totalPages: request.totalPages,
+            page: request.page ,
+            pagingCounter: request.pagingCounter,
+            hasPrevPage: request.hasPrevPage,
+            hasNextPage:request.hasNextPage,
+            nextPage: `localhost:8080/products?limit=${request.limit}&page=${request.nextPage}`,
+            prevPage: `localhost:8080/products?limit=${request.limit}&page=${request.prevPage}` 
         }
+        
         res.status(200).send(response);
     } catch (error) {
-        console.error('Error al obtener los productos:', error);
-        res.status(500).json({ error: 'Ocurrió un error al obtener los productos' });
+        res.status(500).send({ 
+            status : "error",
+            error: `Ocurrió un error al obtener los productos: ${error}`
+        });
     }
 });
 

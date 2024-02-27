@@ -21,7 +21,7 @@ const ProductSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        //enum: ['','',''] 
+        enum: ['shoes','remeras','camperas','jeans','buzos'] 
     },
     thumbnail: {
         type: Array,
