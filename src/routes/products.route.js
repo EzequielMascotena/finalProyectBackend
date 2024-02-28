@@ -22,9 +22,22 @@ routerProd.get("/", async (req, res) => {
         const sort = req.query.sort;
 
         let request = await productManager.getProducts(page, limit, query, sort);
+        
+        //formateo de datos para handlebars
+        const formattedPayload = request.docs.map(doc => {
+            return {
+                _id: doc._id,
+                title: doc.title,
+                description: doc.description,
+                price: doc.price,
+                stock: doc.stock,
+                category: doc.category
+            };
+        });
+
         const response = {
             status: "success",
-            payload: request.docs,
+            payload: formattedPayload,
             totalPages: request.totalPages,
             page: request.page,
             pagingCounter: request.pagingCounter,
@@ -34,7 +47,7 @@ routerProd.get("/", async (req, res) => {
             prevPage: `localhost:8080/products?limit=${request.limit}&page=${request.prevPage}`
         }
 
-        res.status(200).send(response);
+        res.status(200).render('products.handlebars', response);
     } catch (error) {
         res.status(500).send({
             status: "error",

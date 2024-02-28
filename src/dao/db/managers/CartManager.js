@@ -21,12 +21,13 @@ class CartManagerMongo {
     //2 mostrar producto del carrito por Id
     async getCartById(id) {
         try {
-            let cart = await Cart.findById(id).populate('products.product')
+            let cart = await Cart.findById(id).populate('products.product').lean()
+
             if (cart) {
                 return ({
                     sta: true,
                     msg: 'Carrito encontrado',
-                    data: cart
+                    data: cart.products
                 })
             } else {
                 return ({

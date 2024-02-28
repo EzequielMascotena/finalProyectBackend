@@ -22,18 +22,18 @@ routerCart.post("/", async (req, res) => {
 
 //obtener carrito por id
 routerCart.get("/:cid", async (req, res) => {
-    const { cid } = req.params
+    const { cid } = req.params;
     try {
-        let cart = await cartManager.getCartById(cid)
+        let cart = await cartManager.getCartById(cid);
         if (cart.sta === true) {
-            res.status(200).send({ msg: cart.msg, data: cart.data })
+            res.status(200).render('cart.handlebars', cart.data);
         } else {
-            res.status(404).send(`Carrito con id ${cid} no encontrado`)
+            res.status(404).send(`Carrito con id ${cid} no encontrado`);
         }
     } catch (err) {
-        return (`Error al intentar buscar el carrito, ${err}`)
+        res.status(500).send(`Error al intentar buscar el carrito: ${err}`);
     }
-})
+});
 
 // agregar productos al cart
 routerCart.post("/:cid/product/:pid", async (req, res) => {
