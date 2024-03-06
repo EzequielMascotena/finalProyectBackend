@@ -26,7 +26,7 @@ routerCart.get("/:cid", async (req, res) => {
     try {
         let cart = await cartManager.getCartById(cid);
         if (cart.sta === true) {
-            res.status(200).render('cart.handlebars', cart.data);
+            res.status(200).render('cart.handlebars', {cart:cart.data});
         } else {
             res.status(404).send(`Carrito con id ${cid} no encontrado`);
         }
@@ -38,7 +38,7 @@ routerCart.get("/:cid", async (req, res) => {
 // agregar productos al cart
 routerCart.post("/:cid/product/:pid", async (req, res) => {
     const { cid } = req.params
-    const { pid } = req.params
+    //const { pid } = req.params 
     try {
         const respuesta = await cartManager.addProductToCart(cid, pid)
         res.status(201).send(respuesta)
