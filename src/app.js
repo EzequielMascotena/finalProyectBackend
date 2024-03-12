@@ -5,7 +5,8 @@ const MongoStore = require('connect-mongo')
 
 const Database = require('./dao/db/db.js');
 const passport = require('passport')
-const initializePassport = require ('./passport/passport.js')
+const initializeLocalPassport = require ('./passport/localPassport.js')
+const initializeGithubPassport = require ('./passport/githubPassport.js')
 const handlebars = require('express-handlebars');
 const routerTools = require('./routes/chat&realTimeProd.routes.js');
 const routerProd = require('./routes/products.route.js');
@@ -48,7 +49,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 //Passport y estrategias
-initializePassport()
+initializeLocalPassport()
+initializeGithubPassport()
 app.use(passport.initialize())
 app.use(passport.session())
 

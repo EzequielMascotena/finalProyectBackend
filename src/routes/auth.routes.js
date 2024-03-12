@@ -7,7 +7,7 @@ const router = new Router()
 const userManager = new UserManager();
 
 
-// registro con Passport
+// registro con Passport Local
 router.post("/register", passport.authenticate('register', { failureRedirect: '/user/failedRegister' }), async (req, res) => {
     res.status(200).redirect("/api/views/login");
 });
@@ -17,7 +17,7 @@ router.get('/failedRegister', (req, res) => {
 })
 
 
-// login con passport
+// login con passport Local
 router.post("/login", passport.authenticate('login', { failureRedirect: '/user/failedLogin' }), async (req, res) => {
     try {
         if (!req.user) {
@@ -34,6 +34,20 @@ router.post("/login", passport.authenticate('login', { failureRedirect: '/user/f
 router.get('/failedLogin', (res, req) => {
     res.send('Failed user Login')
 })
+
+
+// registro y login con Passport GitHub
+router.get("/github", passport.authenticate('github', {}), async (req, res) => { });
+
+router.get("/callbackGithub", passport.authenticate('github', {}), async (req, res) => {
+    req.session.user = req.user
+
+    res.setHeader('Content-Type', 'application/json');
+    return res.status(200).redirect("/api/products");
+});
+
+
+
 
 
 router.get("/logout", (req, res) => {

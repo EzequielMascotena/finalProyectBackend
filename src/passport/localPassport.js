@@ -6,7 +6,7 @@ const userModel = require('../dao/db/models/user.model')
 const { createHash, isValidatePassword } = require('../utils/bcrypt')
 
 
-const initializePassport = () => {
+const initializeLocalPassport = () => {
     passport.use('register', new LocalStrategy(
         { usernameField: 'email', passReqToCallback: true },
         async (req, username, password, done) => {
@@ -57,4 +57,4 @@ const initializePassport = () => {
     })
 }
 
-module.exports = initializePassport
+module.exports = initializeLocalPassport
