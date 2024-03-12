@@ -27,24 +27,13 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
     const { email, password } = req.body
-    //validacion de admin
-    if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
-        logAdmin= {
-            firstName: 'admin',
-            lastName: 'Coder',
-            email: email,
-            password: password,
-            role: 'admin'
-        }
-        req.session.user = logAdmin;
-        res.status(200).redirect("/api/products");
-    } else try { //busco usuario en la BD
+    try { //busco usuario en la BD
         const user = await userManager.getUser(email, password);
-        if (user) {
+        if (user.id) {
             req.session.user = user;
             res.status(200).redirect("/api/products");
         } else {
-            res.status(401).send({ error:"Email o contraseña incorrecta" });
+            res.status(401).send({ error: "Email o contraseña incorrecta" });
         }
     } catch (error) {
         res.status(500).send({ error: error.message });
