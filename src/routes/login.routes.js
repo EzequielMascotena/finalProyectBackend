@@ -4,7 +4,7 @@ const router = new Router()
 
 //faltaria implementar el Auth
 
-router.get('/login', (req, res)=>{
+router.get('/', (req, res)=>{
     res.render('login')
 })
 

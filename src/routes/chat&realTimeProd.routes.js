@@ -23,8 +23,18 @@ async function obtenerProductos() {
 router.get('/', async (req, res) => {
     try {
         const products = await obtenerProductos();
-        const datos = { products };
-        res.render('home.handlebars', datos)
+        const formattedData = products.docs.map(doc => {
+            return {
+                _id: doc._id,
+                title: doc.title,
+                description: doc.description,
+                price: doc.price,
+                stock: doc.stock,
+                category: doc.category
+            };
+        });
+        const datos = formattedData
+        res.render('tools.handlebars', datos)
     } catch (err) {
         return `error al obtener Productos: ${err}`
     }
@@ -33,7 +43,17 @@ router.get('/', async (req, res) => {
 //productos con socket
 router.get('/realtimeproducts', async (req, res) => {
     const products = await obtenerProductos();
-    const datos = { products };
+        const formattedData = products.docs.map(doc => {
+            return {
+                _id: doc._id,
+                title: doc.title,
+                description: doc.description,
+                price: doc.price,
+                stock: doc.stock,
+                category: doc.category
+            };
+        });
+        const datos = formattedData
     res.render('realTimeProducts.handlebars', datos)
 })
 

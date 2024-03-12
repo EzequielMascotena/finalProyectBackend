@@ -1,11 +1,55 @@
 const { Router } = require('express');
 const UserManager = require('../dao/db/managers/UserManager.js')
+const passport = require('passport')
 
 const router = new Router()
 
 const userManager = new UserManager();
 
 
+// registro con Passport
+router.post("/register", passport.authenticate('register', { failureRedirect: '/user/failedRegister' }), async (req, res) => {
+    res.status(200).redirect("/api/views/login");
+});
+
+router.get('/failedRegister', (req, res) => {
+    res.send("Failed user register")
+})
+
+
+// login con passport
+router.post("/login", passport.authenticate('login', { failureRedirect: '/user/failedLogin' }), async (req, res) => {
+    try {
+        if (!req.user) {
+            res.status(401).send({ error: "Email o contraseña incorrecta" });
+        } else {
+            req.session.user = req.user;
+            res.status(200).redirect("/api/products");
+        }
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+});
+
+router.get('/failedLogin', (res, req) => {
+    res.send('Failed user Login')
+})
+
+
+router.get("/logout", (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error("Error al cerrar sesión:", err);
+            res.status(500).send({ error: "Error al cerrar sesión" });
+        } else {
+            res.status(200).redirect("/api");
+        }
+    });
+});
+
+
+
+/*  //SIN PASSPORT
 router.post("/register", async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
 
@@ -21,7 +65,7 @@ router.post("/register", async (req, res) => {
     } catch (err) {
         res.status(500).send(`El usuario ya existe ${err}`);
     }
-});
+}); 
 
 
 
@@ -38,20 +82,7 @@ router.post("/login", async (req, res) => {
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
-});
+}); */
 
-
-router.get("/logout", (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error("Error al cerrar sesión:", err);
-            res.status(500).send({ error: "Error al cerrar sesión" });
-        } else {
-            res.status(200).redirect("/api/views/login");
-        }
-    });
-});
-
-//
 
 module.exports = router

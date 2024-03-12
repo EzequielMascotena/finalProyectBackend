@@ -27,20 +27,21 @@ Install my-project with npm
 - NPM START (para ejecutar el servidor)
 
 #ENDPOINTS
+INICIO de app / con LOGIN:  http://localhost:8080/api
 
-INICIO de app / con LOGIN
+registro: http://localhost:8080/api/register
 
-http://localhost:8080/api/views/login
-
-
-registro: http://localhost:8080/api/views/register
-
-perfil: http://localhost:8080/api/views/profile
+perfil: http://localhost:8080/api/profile
 
 todos los productos: http://localhost:8080/api/products
 
 productos con filtros y limite: http://localhost:8080/api/products?limit=6&page=1&sort=desc
 
+
+otras herramientas:
+productos en tiempo real: http://localhost:8080/api/tools/realTimeProducts
+
+chat: http://localhost:8080/api/tools/chat
 
 ## Authors
 

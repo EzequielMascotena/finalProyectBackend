@@ -4,8 +4,10 @@ const session = require('express-session')
 const MongoStore = require('connect-mongo')
 
 const Database = require('./dao/db/db.js');
+const passport = require('passport')
+const initializePassport = require ('./passport/passport.js')
 const handlebars = require('express-handlebars');
-const routerHome = require('./routes/home.route.js');
+const routerTools = require('./routes/chat&realTimeProd.routes.js');
 const routerProd = require('./routes/products.route.js');
 const routerCart = require('./routes/carts.route.js');
 const routerAuth = require('./routes/auth.routes.js');
@@ -30,7 +32,6 @@ app.use(session({
     saveUninitialized: true
 }))
 
-
 //Server HTTP
 const server = http.createServer(app)
 
@@ -46,12 +47,17 @@ app.set('views', __dirname + "/views")
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+//Passport y estrategias
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
+
 //Routes
-app.use('/api', routerHome)
+app.use('/api/', routerLogin)
+app.use ('/api/auth', routerAuth)
 app.use('/api/products', routerProd)
 app.use('/api/carts', routerCart)
-app.use ('/api/auth', routerAuth)
-app.use('/api/views', routerLogin)
+app.use('/api/tools', routerTools)
 
 //Socket
 const io = new Server(server)
