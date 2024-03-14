@@ -29,15 +29,19 @@ const initializeGithubPassport = () => {
                 } else {
                     const password = profile.id;
                     const hashedPass = await createHash(password)
-                    newUserGit = new userModel({
+                    let email = profile.email;
+                    if (!email) {
+                        email = profile.id + '@test.com'; // un correo electrónico si el perfil de GitHub no tiene uno
+                    }
+                    const newUserGit = new userModel({
                         githubId: profile.id,
                         firstName: profile.username,
                         lastName: " ",
-                        email: profile.id+'@test.com',
+                        email: email,
                         password: hashedPass
-                    })
-                    const user = await newUserGit.save(); // si no existe, Guardar el nuevo usuario en la base de datos
-                    return done(null, user);
+                    });
+                    const user = await newUserGit.save();
+                    return done(null, user); // Nuevo usuario creado, inicia sesión
                 }
             } catch (err) {
                 done(`Error al crear el usuario desde github: ${err}`)
