@@ -1,15 +1,15 @@
 const { Router } = require('express');
-const UserManager = require('../dao/db/managers/UserManager.js')
+//const UserManager = require('../dao/db/managers/UserManager.js')
 const passport = require('passport')
 
 const router = new Router()
 
-const userManager = new UserManager();
+//const userManager = new UserManager();
 
 
 // registro con Passport Local
 router.post("/register", passport.authenticate('register', { failureRedirect: '/user/failedRegister' }), async (req, res) => {
-    res.status(200).redirect("/api/views/login");
+    res.status(200).redirect("/api");
 });
 
 router.get('/failedRegister', (req, res) => {

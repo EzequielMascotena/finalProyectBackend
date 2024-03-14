@@ -1,7 +1,10 @@
 const passport = require('passport')
 const githubStrategy = require('passport-github2')
+const { createHash, isValidatePassword } = require('../utils/bcrypt')
+
 
 const userModel = require('../dao/db/models/user.model')
+
 
 
 const initializeGithubPassport = () => {
@@ -14,33 +17,28 @@ const initializeGithubPassport = () => {
 
         async (accessToken, refreshToken, profile, done) => {
             try {
-                let { name, email, id } = profile._json
-                let user = await userModel.findOne({ name })
-                console.log(name)
-                if (!user) {
-                    if (!email) {
-                        user = await userModel.create(
-                            {
-                                firstName: name,
-                                lastName: ' ',
-                                email: id+"@default.com",
-                                password: ' ',
-                                github: profile
-                            }
-                        )
-                    } else {
-                        user = await userModel.create(
-                            {
-                                firstName: name,
-                                lastName: ' ',
-                                email,
-                                password: ' ',
-                                github: profile
-                            }
-                        )
-                    }
+                const existInLocal = await userModel.findOne({ email: profile.email });
+                if (existInLocal) {
+                    await userModel.updateOne({ _id: existInLocal._id }, { githubId: profile.id });
+                    return done(null, existInLocal);  // si ya existe por Local, actualizar el usuario con datos git
                 }
-                return done(null, user)
+
+                const exist = await userModel.findOne({ githubId: profile.id });
+                if (exist) {
+                    return done(null, exist) // si ya existe por git, devuelve el user e inicia sesion
+                } else {
+                    const password = profile.id;
+                    const hashedPass = await createHash(password)
+                    newUserGit = new userModel({
+                        githubId: profile.id,
+                        firstName: profile.username,
+                        lastName: " ",
+                        email: profile.id+'@test.com',
+                        password: hashedPass
+                    })
+                    const user = await newUserGit.save(); // si no existe, Guardar el nuevo usuario en la base de datos
+                    return done(null, user);
+                }
             } catch (err) {
                 done(`Error al crear el usuario desde github: ${err}`)
             }
