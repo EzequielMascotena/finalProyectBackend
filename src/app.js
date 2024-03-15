@@ -5,14 +5,15 @@ const MongoStore = require('connect-mongo')
 
 const Database = require('./dao/db/db.js');
 const passport = require('passport')
-const initializeLocalPassport = require ('./passport/localPassport.js')
-const initializeGithubPassport = require ('./passport/githubPassport.js')
+const initializeLocalPassport = require('./passport/localPassport.js')
+const initializeGithubPassport = require('./passport/githubPassport.js')
 const handlebars = require('express-handlebars');
 const routerTools = require('./routes/chat&realTimeProd.routes.js');
 const routerProd = require('./routes/products.route.js');
 const routerCart = require('./routes/carts.route.js');
 const routerAuth = require('./routes/auth.routes.js');
 const routerLogin = require('./routes/login.routes.js')
+const routerSession = require('./routes/sessions.routes.js')
 
 const http = require('http')
 
@@ -26,7 +27,7 @@ const app = express()
 //Sesion
 app.use(session({
     store: MongoStore.create({
-        mongoUrl:'mongodb+srv://ezequielmascotena:ez123456@coderproject.gsslbll.mongodb.net/ecommerce',
+        mongoUrl: 'mongodb+srv://ezequielmascotena:ez123456@coderproject.gsslbll.mongodb.net/ecommerce',
     }),
     secret: 'code',
     resave: true,
@@ -55,11 +56,12 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 //Routes
-app.use('/api/', routerLogin)
-app.use ('/api/auth', routerAuth)
+app.use('/', routerLogin)
+app.use('/api/auth', routerAuth)
 app.use('/api/products', routerProd)
 app.use('/api/carts', routerCart)
 app.use('/api/tools', routerTools)
+app.use('/api/sessions', routerSession)
 
 //Socket
 const io = new Server(server)

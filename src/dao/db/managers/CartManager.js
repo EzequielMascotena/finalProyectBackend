@@ -10,7 +10,7 @@ class CartManagerMongo {
         try {
             const newCart = new Cart()
             await newCart.save()
-            return (`Carrito creado correctamente. ID: ${newCart._id}`)
+            return (newCart._id)
         } catch (err) {
             console.log(err)
             return { error: 'Error ' + err.message }

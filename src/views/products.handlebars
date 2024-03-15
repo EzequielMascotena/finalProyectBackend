@@ -1,10 +1,10 @@
 <div class="container">
-    <h2> Bienvenido {{ userData.firstName }} {{ userData.lastName }}!</h2>
+    <h2> Bienvenido {{ userData.first_name }} {{ userData.last_name }}!</h2>
     <div>
         tipo de cuenta: {{userData.role}}
     </div>
     <div>
-        <a href="/api/profile">Perfil</a>
+        <a href="/api/sessions/current">Perfil</a>
     </div>
 </div>
 
@@ -36,4 +36,4 @@
     </div>
 </div>
 
-<script src="/JS/cart.js" ></script>
+<script src="/JS/cart.js"></script>

@@ -1,6 +1,9 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 
+const CartManagerMongo = require('../dao/db/managers/CartManager.js')
+const cartManager = new CartManagerMongo();
+
 const userModel = require('../dao/db/models/user.model')
 
 const { createHash, isValidatePassword } = require('../utils/bcrypt')
@@ -13,15 +16,18 @@ const initializeLocalPassport = () => {
             try {
                 let userData = req.body
                 let user = await userModel.findOne({ email: username })
+                const hashedPassword = createHash(password)
+                const cart = await cartManager.addCart()
                 if (user) {
                     done('Error, usuario existente')
                 }
                 let userNew = {
-                    name: userData.name,
+                    cart_id: cart,
+                    first_name: userData.firstName,
+                    last_name: userData.lastName,
+                    age: userData.age,
                     email: username,
-                    firstName: userData.firstName,
-                    lastName: userData.lastName,
-                    password: createHash(userData.password)
+                    password: hashedPassword
                 }
                 let result = await userModel.create(userNew)
                 done(null, result)

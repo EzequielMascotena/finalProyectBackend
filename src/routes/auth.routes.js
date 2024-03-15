@@ -9,7 +9,7 @@ const router = new Router()
 
 // registro con Passport Local
 router.post("/register", passport.authenticate('register', { failureRedirect: '/user/failedRegister' }), async (req, res) => {
-    res.status(200).redirect("/api");
+    res.status(200).redirect("/");
 });
 
 router.get('/failedRegister', (req, res) => {
@@ -56,7 +56,7 @@ router.get("/logout", (req, res) => {
             console.error("Error al cerrar sesión:", err);
             res.status(500).send({ error: "Error al cerrar sesión" });
         } else {
-            res.status(200).redirect("/api");
+            res.status(200).redirect("/");
         }
     });
 });

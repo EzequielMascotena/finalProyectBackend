@@ -2,6 +2,9 @@ const passport = require('passport')
 const githubStrategy = require('passport-github2')
 const { createHash, isValidatePassword } = require('../utils/bcrypt')
 
+const CartManagerMongo = require('../dao/db/managers/CartManager.js')
+const cartManager = new CartManagerMongo();
+
 
 const userModel = require('../dao/db/models/user.model')
 
@@ -19,8 +22,8 @@ const initializeGithubPassport = () => {
             try {
                 const existInLocal = await userModel.findOne({ email: profile.email });
                 if (existInLocal) {
-                    await userModel.updateOne({ _id: existInLocal._id }, { githubId: profile.id });
-                    return done(null, existInLocal);  // si ya existe por Local, actualizar el usuario con datos git
+                    await userModel.updateOne({ _id: existInLocal._id }, { githubId: profile.id });  // si ya existe por Local, actualizar el usuario con datos git
+                    return done(null, existInLocal);
                 }
 
                 const exist = await userModel.findOne({ githubId: profile.id });
@@ -29,14 +32,17 @@ const initializeGithubPassport = () => {
                 } else {
                     const password = profile.id;
                     const hashedPass = await createHash(password)
+                    const cart = await cartManager.addCart()
                     let email = profile.email;
                     if (!email) {
                         email = profile.id + '@test.com'; // un correo electrónico si el perfil de GitHub no tiene uno
                     }
                     const newUserGit = new userModel({
+                        cart_id: cart,
                         githubId: profile.id,
-                        firstName: profile.username,
-                        lastName: " ",
+                        first_name: profile.username,
+                        last_name: " ",
+                        age: profile.age,
                         email: email,
                         password: hashedPass
                     });

@@ -1,17 +1,17 @@
 <div class="mt-5 ms-5 p-2">
+    <div>
+        <h2>Profile</h2>
         <div>
-            <h2>Profile</h2>
             <div>
                 <div>
-                    <div>
-                        <h3>{{ this.firstName }} {{ this.lastName }}</h3>
-                        <p>{{ this.email }}</p>
-                    </div>
-                </div>
-                <div>
-                    tipo de cuenta: {{this.role}}
+                    <h3>{{ this.first_name }} {{ this.last_name }}</h3>
+                    <p>{{ this.email }}</p>
                 </div>
             </div>
-            <a href="/api/auth/logout">Logout</a>
+            <div>
+                tipo de cuenta: {{this.role}}
+            </div>
         </div>
+        <a href="/api/auth/logout">Logout</a>
+    </div>
 </div>
