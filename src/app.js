@@ -1,7 +1,9 @@
 const express = require('express');
+const dotenv = require('dotenv')
 
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
+const {Command} = require('commander')
 
 const Database = require('./dao/db/db.js');
 const passport = require('passport')
@@ -17,11 +19,24 @@ const routerSession = require('./routes/sessions.routes.js')
 
 const http = require('http')
 
+ //commander
+const program = new Command()
+program
+.option('--mode <mode>', 'Modo o enviroment de trabajo', 'prod')
+
+program.parse()
+
+//ruta de entornos
+dotenv.config({
+    path: program.opts().mode ==='dev'? '.env.dev' :'.env.prod'
+} );
+
+
 //Socket
 const { Server } = require('socket.io')
 const socketService = require('./socket/index.js')
 
-const PORT = 8080 || process.env.PORT
+const PORT = process.env.PORT
 const app = express()
 
 //Sesion
