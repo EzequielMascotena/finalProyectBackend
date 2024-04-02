@@ -24,10 +24,12 @@ Install my-project with npm
 
 - GIT CLONE
 - NPM I
-- NPM START (para ejecutar el servidor)
+- NPM START (para ejecutar el server)
+- NPM RUN PROD (para ejecutar el servidor en modo production)
+- NPM RUN DEV (para ejecutar el servidor en modo development)
 
 #ENDPOINTS
-INICIO de app / con LOGIN:  http://localhost:8080/api
+INICIO de app / con LOGIN:  http://localhost:8080
 
 registro: http://localhost:8080/api/register
 

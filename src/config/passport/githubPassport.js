@@ -1,12 +1,11 @@
 const passport = require('passport')
 const githubStrategy = require('passport-github2')
-const { createHash, isValidatePassword } = require('../utils/bcrypt')
+const { createHash, isValidatePassword } = require('../../utils/bcrypt')
 
-const CartManagerMongo = require('../dao/db/managers/CartManager.js')
+const CartManagerMongo = require('../../controllers/managers/CartManager')
 const cartManager = new CartManagerMongo();
 
-
-const userModel = require('../dao/db/models/user.model')
+const userModel = require('../../models/user.model')
 
 
 

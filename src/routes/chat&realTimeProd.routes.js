@@ -4,10 +4,10 @@ const { Router } = require('express');
 //const productManager = new ProductManager('./products.json')
 
 //Mongoose
-const ProductManagerMongo = require('../dao/db/managers/ProductManager');
+const ProductManagerMongo = require('../controllers/managers/ProductManager');
 const productManager = new ProductManagerMongo();
 
-const ChatManagerMongo = require('../dao/db/managers/ChatManager');
+const ChatManagerMongo = require('../controllers/managers/ChatManager');
 const chatManager = new ChatManagerMongo();
 
 const router = new Router()

@@ -7,12 +7,12 @@ const {Command} = require('commander')
 
 const Database = require('./dao/db/db.js');
 const passport = require('passport')
-const initializeLocalPassport = require('./passport/localPassport.js')
-const initializeGithubPassport = require('./passport/githubPassport.js')
+const initializeLocalPassport = require('./config/passport/localPassport.js')
+const initializeGithubPassport = require('./config/passport/githubPassport.js')
 const handlebars = require('express-handlebars');
 const routerTools = require('./routes/chat&realTimeProd.routes.js');
-const routerProd = require('./routes/products.route.js');
-const routerCart = require('./routes/carts.route.js');
+const routerProd = require('./routes/products.routes.js');
+const routerCart = require('./routes/carts.routes.js');
 const routerAuth = require('./routes/auth.routes.js');
 const routerLogin = require('./routes/login.routes.js')
 const routerSession = require('./routes/sessions.routes.js')

@@ -5,7 +5,7 @@ const { Router } = require('express');
 const cartManager = new CartManager ('./carrito.json') */
 
 //Mongoose
-const CartManagerMongo = require('../dao/db/managers/CartManager.js')
+const CartManagerMongo = require('../controllers/managers/CartManager')
 
 const routerCart = new Router()
 const cartManager = new CartManagerMongo();

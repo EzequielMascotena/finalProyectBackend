@@ -1,4 +1,4 @@
-const Chat = require('../models/messages.model')
+const Chat = require('../../models/messages.model')
 
 class ChatManagerMongo {
     constructor(path) {
