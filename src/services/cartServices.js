@@ -1,12 +1,12 @@
-const Cart = require('../../models/cart.model')
+const Cart = require('../models/cart.model')
 
 
-class CartManagerMongo {
+class CartServices {
     constructor(path) {
         this.path = path;
     }
 
-    async addCart() {
+    async addCartToDb() {
         try {
             const newCart = new Cart()
             await newCart.save()
@@ -19,7 +19,7 @@ class CartManagerMongo {
 
 
     //2 mostrar producto del carrito por Id
-    async getCartById(id) {
+    async getCartByIdFromDb(id) {
         try {
             let cart = await Cart.findById(id).populate('products.product').lean()
 
@@ -42,7 +42,7 @@ class CartManagerMongo {
     }
 
     //3 agregar id de producto al carrito
-    async addProductToCart(cid, pid) {
+    async addProductToCartOnDb(cid, pid) {
         try {
             const cart = await Cart.findById(cid);
 
@@ -71,7 +71,7 @@ class CartManagerMongo {
         }
     }
 
-    async deleteProductFromCart(cid, pid) {
+    async deleteProductFromCartOnDb(cid, pid) {
         try {
             const cart = await Cart.findById(cid);
 
@@ -90,7 +90,7 @@ class CartManagerMongo {
         }
     }
 
-    async updateCart(cid, cart) {
+    async updateCartOnDb(cid, cart) {
         try {
             const oldCart = await Cart.findById(cid);
             oldCart.products = cart
@@ -106,7 +106,7 @@ class CartManagerMongo {
         }
     }
 
-    async updateQtity(cid, pid, params) {
+    async updateQtityOnDb(cid, pid, params) {
         try {
             const cart = await Cart.findById(cid);
             const prod = cart.products.find((prod) => prod.product.toString() === pid);
@@ -126,7 +126,7 @@ class CartManagerMongo {
     }
 
 
-    async deleteAllProductsFromCart(cid) {
+    async deleteAllProductsFromCartOnDb(cid) {
         try {
             const cart = await Cart.findById(cid);
 
@@ -146,4 +146,4 @@ class CartManagerMongo {
     }
 }
 
-module.exports = CartManagerMongo
+module.exports = CartServices

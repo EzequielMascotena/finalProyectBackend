@@ -1,7 +1,7 @@
 
 
 
-const ProductManagerMongo = require('../controllers/managers/ProductManager');
+const ProductManagerMongo = require('../controllers/ProductController');
 const productManager = new ProductManagerMongo();
 
 const ChatManagerMongo = require('../controllers/managers/ChatManager');

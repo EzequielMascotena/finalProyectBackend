@@ -1,12 +1,12 @@
-const Products = require('../../models/product.model')
+const Products = require('../models/product.model')
 
-class ProductManagerMongo {
+class ProductServices {
     constructor(path) {
         this.path = path;
     }
 
     //agregar producto
-    async addProduct(prod) {
+    async addProductToDb(prod) {
         try {
             prod.status = true;
             await Products.create(prod)
@@ -18,7 +18,7 @@ class ProductManagerMongo {
     }
 
     //obtener todos los prods
-    async getProducts(page, limit, query, sort) {
+    async getProductsFromDb(page, limit, query, sort) {
         try {
             //limit
             let l = 10
@@ -63,7 +63,7 @@ class ProductManagerMongo {
     }
 
     //obtener producto por id
-    async getProductById(id) {
+    async getProductByIdFromDb(id) {
         try {
             let product = await Products.findById(id)
             if (product) {
@@ -83,7 +83,7 @@ class ProductManagerMongo {
     }
 
     // modificar un producto con id
-    async updateProduct(id, producto) {
+    async updateProductOnDb(id, producto) {
         try {
             const oldProd = await Products.findById(id);
 
@@ -115,7 +115,7 @@ class ProductManagerMongo {
 
 
     // borrar un prod por id
-    async deleteProduct(id) {
+    async deleteProductFromDb(id) {
         try {
             const prods = await Products.find()
             let exist = prods.find((p) => p.id === id);
@@ -132,4 +132,4 @@ class ProductManagerMongo {
     }
 };
 
-module.exports = ProductManagerMongo;
+module.exports = ProductServices;

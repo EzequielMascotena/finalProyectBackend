@@ -2,7 +2,7 @@ const passport = require('passport')
 const githubStrategy = require('passport-github2')
 const { createHash, isValidatePassword } = require('../../utils/bcrypt')
 
-const CartManagerMongo = require('../../controllers/managers/CartManager')
+const CartManagerMongo = require('../../controllers/CartController')
 const cartManager = new CartManagerMongo();
 
 const userModel = require('../../models/user.model')
