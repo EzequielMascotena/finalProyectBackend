@@ -1,12 +1,12 @@
-const Chat = require('../../models/messages.model')
+const Chat = require('../models/messages.model')
 
-class ChatManagerMongo {
+class ChatServices {
     constructor(path) {
         this.path = path;
     }
 
     //obtener msgs
-    async getChat() {
+    async getChatFromDb() {
         try {
             let chat = await Chat.find().lean()
             return (chat)
@@ -16,7 +16,7 @@ class ChatManagerMongo {
     }
 
     //agregar msgs
-    async addMsg(msg) {
+    async addMsgToDb(msg) {
         try {
             await Chat.create(msg)
             return (true)
@@ -27,4 +27,4 @@ class ChatManagerMongo {
     }
 }
 
-module.exports = ChatManagerMongo
+module.exports = ChatServices

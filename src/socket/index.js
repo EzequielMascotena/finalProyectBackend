@@ -1,11 +1,8 @@
+const ProductController = require('../controllers/ProductController');
+const productController = new ProductController();
 
-
-
-const ProductManagerMongo = require('../controllers/ProductController');
-const productManager = new ProductManagerMongo();
-
-const ChatManagerMongo = require('../controllers/managers/ChatManager');
-const chatManager = new ChatManagerMongo();
+const ChatServices = require('../services/chatServices');
+const chatServices = new ChatServices();
 
 
 //Socket Server
@@ -15,8 +12,8 @@ const socketService = (socket, io) => {
     //productos
     socket.on('addProdInfo', async (data) => {
         try {
-            await productManager.addProduct(data);
-            const updatedProducts = await productManager.getProducts();
+            await productController.addProduct(data);
+            const updatedProducts = await productController.getProducts();
             socket.emit('prodsToRender', updatedProducts);
         } catch (error) {
             console.error('Error al agregar producto:', error);
@@ -25,8 +22,8 @@ const socketService = (socket, io) => {
 
     socket.on('deleteProdInfo', async (data) => {
         try {
-            await productManager.deleteProduct(data.id);
-            const updatedProducts = await productManager.getProducts();
+            await productController.deleteProduct(data.id);
+            const updatedProducts = await productController.getProducts();
             socket.emit('prodsToRender', updatedProducts);
         } catch (error) {
             console.error('Error al eliminar producto:', error);
@@ -36,8 +33,8 @@ const socketService = (socket, io) => {
 
     //chat
     socket.on('newMenssage', async (msg) => {
-        await chatManager.addMsg(msg)
-        const chat = await chatManager.getChat()
+        await chatServices.addMsgToDb(msg)
+        const chat = await chatServices.getChatFromDb()
         io.sockets.emit('allMsgs', chat)
     })
 }
