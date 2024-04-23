@@ -1,4 +1,8 @@
+const uuid4 = require('uuid4');
 const CartServices = require('../services/cartServices')
+const ProductServices = require('../services/ProductServices');
+
+const productServices = new ProductServices();
 
 const cartServices = new CartServices();
 
@@ -10,9 +14,9 @@ class CartController {
     async addCart(req, res) {
         try {
             const resultMessage = await cartServices.addCartToDb()
-            res.status(201).send(resultMessage);
+            return (resultMessage);
         } catch (err) {
-            res.status(500).send(`error al crear carrito: ${err}`);
+            return (`error al crear carrito: ${err}`);
         }
     }
 
@@ -94,6 +98,77 @@ class CartController {
             return ('Error al agregar producto al carrito:', err);
         }
     }
+
+
+    async purchase(req, res) {
+        const { cid } = req.params;
+        try {
+            let cart = await cartServices.getCartByIdFromDb(cid);
+
+            if (cart.sta && cart.data) {
+                const productosSinStock = [];
+                let totalPrice = 0;
+
+                // Array para enviar al modelo de ticket
+                const ticketData = {
+                    code: uuid4,
+                    amount: 0,
+                    purchaser: req.session.user.email,
+                    products: []
+                };
+
+                for (const item of cart.data) {
+                    const product = item.product;
+                    const quantity = item.quantity;
+
+                    // Verificar si hay suficiente stock del producto
+                    const currentProduct = await productServices.getProductByIdFromDb(product._id);
+                    if (!currentProduct || currentProduct.data.stock < quantity) {
+                        productosSinStock.push({
+                            productId: product._id,
+                            productName: product.name,
+                            quantityRequested: quantity
+                        });
+                    } else {
+                        const subtotal = product.price * quantity;
+                        totalPrice += subtotal;
+
+                        currentProduct.data.stock -= quantity;
+                        await productServices.updateProductOnDb(product._id, currentProduct.data);
+
+                        ticketData.products.push({
+                            productId: product._id,
+                            productName: product.name,
+                            quantity: quantity,
+                            price: product.price
+                        });
+                    }
+                }
+
+                ticketData.amount = totalPrice;
+
+                // Si todos los productos se procesan correctamente, limpia el carrito
+                if (productosSinStock.length === 0) {
+                    await CartServices.purchaseOnDb(ticketData);
+
+                    await cartServices.deleteProductFromCartOnDb(cid);
+                }
+
+                let responseMessage = 'Compra procesada correctamente'+ticketData;
+                if (productosSinStock.length > 0) {
+                    responseMessage += '. Algunos productos no pudieron procesarse debido a falta de stock.';
+                }
+
+                return res.status(200).json({ success: true, message: responseMessage, productosSinStock });
+            } else {
+                return res.status(404).json({ success: false, message: 'El carrito no fue encontrado' });
+            }
+        } catch (error) {
+            console.error('Error al procesar la compra:', error);
+            return res.status(500).json({ success: false, message: 'Ocurrió un error al procesar la compra' });
+        }
+    }
+
 }
 
 module.exports = CartController

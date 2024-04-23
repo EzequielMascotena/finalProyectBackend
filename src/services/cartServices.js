@@ -1,4 +1,6 @@
-const Cart = require('../models/cart.model')
+const Cart = require('../dao/mongoDB/models/cart.model')
+
+const Ticket = require ('../dao/mongoDB/models/ticket.model')
 
 
 class CartServices {
@@ -130,8 +132,6 @@ class CartServices {
         try {
             const cart = await Cart.findById(cid);
 
-            console.log(cart)
-
             // verifica la existencia del carrito
             if (!cart) {
                 return (`Error: no encontramos el Carrito con el ID ${cid}.`);
@@ -142,6 +142,15 @@ class CartServices {
             return `Todos los productos fueron eliminados del carrito ${cid} correctamente.`;
         } catch (error) {
             return `Error al eliminar producto del carrito: ${error.message}`;
+        }
+    }
+
+    async purchaseOnDb(ticketData) {
+        try {
+            await Ticket.create(ticketData)
+            return (true)
+        } catch (error) {
+            return `Error realizar la compra: ${error.message}`;
         }
     }
 }

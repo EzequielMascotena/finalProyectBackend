@@ -5,9 +5,8 @@
   "main": "scr/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"nodemon src/app.js",
-    "dev": "nodemon src/app.js --mode dev",
-    "prod": "nodemon src/app.js --mode prod"
+    "start":"nodemon src/app.js --mode prod",
+    "dev": "nodemon src/app.js --mode dev"
   },
   "keywords": [],
   "author": "Ezequiel Mascotena",

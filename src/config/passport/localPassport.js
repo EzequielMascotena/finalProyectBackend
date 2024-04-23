@@ -4,7 +4,7 @@ const LocalStrategy = require('passport-local').Strategy
 const CartManagerMongo = require('../../controllers/CartController')
 const cartManager = new CartManagerMongo();
 
-const userModel = require('../../models/user.model')
+const userModel = require('../../dao/mongoDB/models/user.model')
 
 const { createHash, isValidatePassword } = require('../../utils/bcrypt')
 
@@ -17,21 +17,23 @@ const initializeLocalPassport = () => {
                 let userData = req.body
                 let user = await userModel.findOne({ email: username })
                 const hashedPassword = createHash(password)
-                const cart = await cartManager.addCart()
                 if (user) {
                     done('Error, usuario existente')
+                } else {
+                    const cart = await cartManager.addCart()
+                    let userNew = {
+                        cart: cart._id,
+                        first_name: userData.firstName,
+                        last_name: userData.lastName,
+                        age: userData.age,
+                        email: username,
+                        password: hashedPassword
+                    }
+                    let result = await userModel.create(userNew)
+                    done(null, result)
                 }
-                let userNew = {
-                    cart_id: cart,
-                    first_name: userData.firstName,
-                    last_name: userData.lastName,
-                    age: userData.age,
-                    email: username,
-                    password: hashedPassword
-                }
-                let result = await userModel.create(userNew)
-                done(null, result)
             } catch (err) {
+                console.log(err)
                 done(`Error al crear el usuario: ${err}`)
             }
         }
@@ -59,7 +61,7 @@ const initializeLocalPassport = () => {
 
     passport.deserializeUser((id, done) => {
         let user = userModel.findById(id)
-        done(null, user)
+        done(null, user) 
     })
 }
 

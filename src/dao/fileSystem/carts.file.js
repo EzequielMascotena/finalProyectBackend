@@ -1,7 +1,7 @@
 const fs = require('fs');
 const uuid4 = require('uuid4');
 
-class CartManager {
+class Carts {
     constructor(path) {
         this.path = path;
     }
@@ -66,4 +66,4 @@ class CartManager {
     }
 }
 
-module.exports = CartManager
+module.exports = Carts

@@ -5,7 +5,7 @@ const { createHash, isValidatePassword } = require('../../utils/bcrypt')
 const CartManagerMongo = require('../../controllers/CartController')
 const cartManager = new CartManagerMongo();
 
-const userModel = require('../../models/user.model')
+const userModel = require('../../dao/mongoDB/models/user.model')
 
 
 

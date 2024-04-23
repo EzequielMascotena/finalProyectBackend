@@ -1,12 +1,10 @@
-const fs = require('fs');
+const fs = require('fs')
 const uuid4 = require('uuid4');
 
-class ProductManager {
+class Products {
     constructor(path) {
         this.path = path;
     }
-
-    //agregar producto
     async addProduct(prod) {
         const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
 
@@ -36,12 +34,10 @@ class ProductManager {
         }
     }
 
-    //obtener todos los prods
     async getProducts() {
         const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
         return prods
     }
-
     //obtener producto por id
     async getProductById(id) {
         const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
@@ -101,4 +97,4 @@ class ProductManager {
     }
 };
 
-module.exports = ProductManager
+module.exports = Products
