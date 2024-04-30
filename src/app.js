@@ -14,7 +14,6 @@ const routerCart = require('./routes/carts.routes.js');
 const routerAuth = require('./routes/auth.routes.js');
 const routerLogin = require('./routes/login.routes.js')
 const routerSession = require('./routes/sessions.routes.js')
-const handlePolicies = require('./utils/middlewares.js')
 
 const http = require('http')
 

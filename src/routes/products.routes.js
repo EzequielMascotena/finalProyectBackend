@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const handlePolicies = require('../utils/middlewares')
 
 //FS
 //const ProductManager  = require ('../dao/fileSystem/ProductManager')
@@ -10,11 +11,11 @@ const ProductController = require('../controllers/ProductController');
 const routerProd = new Router()
 const productController = new ProductController();
 
-routerProd.post("/", productController.addProduct)
+routerProd.post("/", handlePolicies('admin'), productController.addProduct)
 routerProd.get("/", productController.getProducts);
 routerProd.get("/:id", productController.getProductById)
-routerProd.put("/:pid", productController.updateProduct);
-routerProd.delete("/:pid", productController.deleteProduct)
+routerProd.put("/:pid", handlePolicies('admin'), productController.updateProduct);
+routerProd.delete("/:pid", handlePolicies('admin'), productController.deleteProduct)
 
 module.exports = routerProd;
 

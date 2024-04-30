@@ -1,5 +1,7 @@
 const { Router } = require('express');
 
+const handlePolicies = require('../utils/middlewares')
+
 //FS
 /* const CartManager  = require ('../dao/fileSystem/CartManager')
 const cartManager = new CartManager ('./carrito.json') */
@@ -14,25 +16,25 @@ const cartController = new CartController();
 routerCart.post("/", cartController.addCart);
 
 //obtener carrito por id
-routerCart.get("/:cid", cartController.getCartById);
+routerCart.get("/:cid", handlePolicies('user'), cartController.getCartById);
 
 // agregar productos al cart
-routerCart.post("/:cid/product/:pid", cartController.addProductToCart)
+routerCart.post("/:cid/product/:pid", handlePolicies('user'), cartController.addProductToCart)
 
 // eliminar un producto del carrito
-routerCart.delete("/:cid/product/:pid", cartController.deleteProductFromCart)
+routerCart.delete("/:cid/product/:pid", handlePolicies('user'), cartController.deleteProductFromCart)
 
 //actualiza el carrito
-routerCart.put("/:cid", cartController.updateCart)
+routerCart.put("/:cid", handlePolicies('user'), cartController.updateCart)
 
 //actualiza la cant de un prod
-routerCart.put("/:cid/product/:pid", cartController.updateQtity)
+routerCart.put("/:cid/product/:pid", handlePolicies('user'), cartController.updateQtity)
 
 // eliminar todos los productos del carrito
-routerCart.delete("/:cid", cartController.deleteAllProductsFromCart)
+routerCart.delete("/:cid", handlePolicies('user'), cartController.deleteAllProductsFromCart)
 
 // ticket de compra
-routerCart.post("/:cid/purchase", cartController.purchase)
+routerCart.post("/:cid/purchase", handlePolicies('user'), cartController.purchase)
 
 module.exports = routerCart;
 

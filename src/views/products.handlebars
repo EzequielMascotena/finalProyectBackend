@@ -3,8 +3,10 @@
     <div>
         tipo de cuenta: {{userData.role}}
     </div>
+    <div id="userData" data-cart={{ userData.cart }}></div>
     <div>
-        <a href="/api/sessions/current">Perfil</a>
+        <a href="/api/sessions/current">---Perfil---</a>
+        <a href="/api/carts/{{ userData.cart }}">CARRITO---</a>
     </div>
 </div>
 
@@ -25,8 +27,8 @@
                             <strong>ID:</strong> {{_id}}
                             <p class="card-text">{{description}}</p>
                             <strong>Precio: $</strong> {{price}}
-                            <button onclick="return addToCart('{{_id}}')" type="button"
-                                class="agregar btn btn-secondary m-3">Agregar al Carrito</button>
+                            <button onclick="addToCart('{{_id}}')" type="button"
+                                class="agregar btn btn-secondary m-3"> Agregar al Carrito </button>
                         </div>
                     </div>
                 </div>

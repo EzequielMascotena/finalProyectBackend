@@ -1,4 +1,6 @@
 const { Router } = require('express');
+const handlePolicies = require('../utils/middlewares')
+
 //FS
 //const ProductManager = require('../dao/fileSystem/ProductManager');
 //const productManager = new ProductManager('./products.json')
@@ -13,10 +15,10 @@ const router = new Router()
 
 router.get('/', obtAllProds)
 //productos con socket
-router.get('/realtimeproducts', showLiveProds)
+router.get('/realtimeproducts', handlePolicies('admin'), showLiveProds)
 
 //chat con socket
-router.get('/chat', chatController.getChat)
+router.get('/chat', handlePolicies('user'), chatController.getChat)
 
 
 
