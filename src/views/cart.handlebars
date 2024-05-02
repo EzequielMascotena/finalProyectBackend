@@ -1,7 +1,7 @@
 <div class="container">
     <h1>Carrito</h1>
     <div class="container">
-        {{#each cart}}
+        {{#each response.cart.data}}
         <div>
             <h4>Producto: {{this.product.title}}</h4>
             <h6>Cantidad: {{this.quantity}}</h6>
@@ -9,11 +9,64 @@
         {{/each}}
     </div>
 
-    <div class="agregar btn btn-secondary m-3">
-        <a href="">Comprar</a>
+    <div>
+        <button onclick="purchase('{{response.userData}}')" type="button" class="agregar btn btn-secondary m-3"
+            data-bs-toggle="modal" data-bs-target="#staticBackdrop"> Comprar
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Ticket de compra</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-body">
+                            <div>
+                                <!-- Mostrar el mensaje de respuesta -->
+                                <p>{{data.responseMessage}}</p>
+
+                                <!-- Si hay productos sin stock, mostrarlos -->
+                                {{#if data.productosSinStock.length}}
+                                <h2>Productos sin stock:</h2>
+                                <ul>
+                                    {{#each data.productosSinStock}}
+                                    <li>{{this.product.title}} - Cantidad solicitada: {{this.quantityRequested}}</li>
+                                    {{/each}}
+                                </ul>
+                                {{/if}}
+
+                                <!-- Si hay datos del ticket de compra, mostrarlos -->
+                                {{#if data.ticketData}}
+                                <h2>Ticket de compra:</h2>
+                                <p>Total: {{data.ticketData.amount}}</p>
+                                <h3>Productos:</h3>
+                                <ul>
+                                    {{#each data.ticketData.products}}
+                                    <li>{{this.productName}} - Cantidad: {{this.quantity}} - Precio unitario:
+                                        {{this.price}}</li>
+                                    {{/each}}
+                                </ul>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            onclick="window.location.href = '/api/carts/{{response.userData}}'"
+                            data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary"
+                            onclick="window.location.href = '/api/products'">Ir a Productos</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    
+
 
     <div>
         <a href="/api/sessions/current">---Perfil---</a>
@@ -21,3 +74,6 @@
         <a href="/api/products">Seguir Comprando---</a>
     </div>
 </div>
+
+
+<script src="/JS/cart.js"></script>

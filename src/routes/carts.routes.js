@@ -34,7 +34,7 @@ routerCart.put("/:cid/product/:pid", handlePolicies('user'), cartController.upda
 routerCart.delete("/:cid", handlePolicies('user'), cartController.deleteAllProductsFromCart)
 
 // ticket de compra
-routerCart.post("/:cid/purchase", handlePolicies('user'), cartController.purchase)
+routerCart.post("/:cid/purchase", cartController.purchase)
 
 module.exports = routerCart;
 

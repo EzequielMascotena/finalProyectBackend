@@ -1,19 +1,18 @@
-async function addToCart(pid) {
-    const cart= userData.cart
+async function purchase(cid) {
     try {
-        const userDataElement = document.getElementById('userData');
-        const cart = userDataElement.dataset.cart;
-        const response = await fetch(`/api/carts/${cart}/product/${pid}`, {
+        const response = await fetch(`/api/carts/${cid}/purchase`, {
             method: 'POST',
         });
+        
+        const data = await response.json();
+        console.log(data)
 
         if (response.ok) {
-            console.log(`Producto ${pid} agregado al carrito correctamente.`);
+            console.log('Proceso realizado correctamente.')
         } else {
-            console.error('Error al agregar producto al carrito:', response.statusText);
+            console.error('Error al realizar la compra:', response.statusText)
         }
     } catch (error) {
-        console.error('Error al agregar producto al carrito:', error);
+        console.error('Error al realizar la compra:', error);
     }
 }
-

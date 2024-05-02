@@ -1,6 +1,6 @@
 const Cart = require('../dao/mongoDB/models/cart.model')
 
-const Ticket = require ('../dao/mongoDB/models/ticket.model')
+const Ticket = require('../dao/mongoDB/models/ticket.model')
 
 
 class CartServices {

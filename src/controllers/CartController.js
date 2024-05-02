@@ -25,9 +25,14 @@ class CartController {
     async getCartById(req, res) {
         const { cid } = req.params;
         try {
-            let cart = await cartServices.getCartByIdFromDb(cid);
+            let cart = await cartServices.getCartByIdFromDb(cid)
+            const userData = req.session.user.cart
+            const response = {
+                cart,
+                userData
+            }
             if (cart.sta === true) {
-                res.status(200).render('cart.handlebars', { cart: cart.data });
+                res.status(200).render('cart.handlebars', { response });
             } else {
                 res.status(404).send(`Carrito con id ${cid} no encontrado`);
             }
@@ -99,19 +104,22 @@ class CartController {
         }
     }
 
-
+// ticket
     async purchase(req, res) {
         const { cid } = req.params;
         try {
             let cart = await cartServices.getCartByIdFromDb(cid);
+            let responseMessage = 'Agregue productos al carrito para continuar'
+
+            if (cart.data.length === 0) {
+                return res.status(400).json({ success: false, responseMessage });
+            }
 
             if (cart.sta && cart.data) {
                 const productosSinStock = [];
                 let totalPrice = 0;
 
-                // Array para enviar al modelo de ticket
                 const ticketData = {
-                    code: uuid4,
                     amount: 0,
                     purchaser: req.session.user.email,
                     products: []
@@ -125,11 +133,11 @@ class CartController {
                     const currentProduct = await productServices.getProductByIdFromDb(product._id);
                     if (!currentProduct || currentProduct.data.stock < quantity) {
                         productosSinStock.push({
-                            productId: product._id,
-                            productName: product.name,
+                            product: item.product,
                             quantityRequested: quantity
                         });
                     } else {
+                        // Si hay suficiente stock, agregar el producto al ticket de compra
                         const subtotal = product.price * quantity;
                         totalPrice += subtotal;
 
@@ -138,28 +146,49 @@ class CartController {
 
                         ticketData.products.push({
                             productId: product._id,
-                            productName: product.name,
+                            productName: product.title,
                             quantity: quantity,
                             price: product.price
                         });
                     }
                 }
-
                 ticketData.amount = totalPrice;
 
-                // Si todos los productos se procesan correctamente, limpia el carrito
+                // Si todos los productos tienen stock, genera el ticket y limpia el carrito
                 if (productosSinStock.length === 0) {
-                    await CartServices.purchaseOnDb(ticketData);
+                    ticketData.code = uuid4()
+                    await cartServices.purchaseOnDb(ticketData)
+                    await cartServices.deleteAllProductsFromCartOnDb(cid)
+                    responseMessage = 'Compra procesada correctamente'
+                } else {
+                    // filtramos los productos que si tenemos stock y generamos el ticket
+                    let checkCart = cart.data.filter(item => {
+                        return !productosSinStock.some(productoSinStock => productoSinStock.product._id === item.product._id);
+                    });
+                    if (checkCart.length > 0) {
+                        ticketData.code = uuid4()
+                        await cartServices.purchaseOnDb(ticketData)
+                    }
 
-                    await cartServices.deleteProductFromCartOnDb(cid);
+                    // Si algunos productos no pudieron procesarse debido a falta de stock los dejamos en el carrito
+                    let modifiedCart = cart.data.filter(item => {
+                        return productosSinStock.some(productoSinStock => productoSinStock.product._id === item.product._id);
+                    });
+
+                    const updatedCart = modifiedCart.map(item => {
+                        return {
+                            product: item.product._id,
+                            quantity: item.quantity,
+                            _id: item._id
+                        };
+                    });
+                    await cartServices.updateCartOnDb(cid, updatedCart)
+
+                    responseMessage = 'Gracias por tu compra. Los siguientes productos no pudieron procesarse debido a falta de stock: ';
                 }
+                const response = { responseMessage, productosSinStock, ticketData }
 
-                let responseMessage = 'Compra procesada correctamente'+ticketData;
-                if (productosSinStock.length > 0) {
-                    responseMessage += '. Algunos productos no pudieron procesarse debido a falta de stock.';
-                }
-
-                return res.status(200).json({ success: true, message: responseMessage, productosSinStock });
+                res.status(200).send(response);
             } else {
                 return res.status(404).json({ success: false, message: 'El carrito no fue encontrado' });
             }
@@ -168,7 +197,6 @@ class CartController {
             return res.status(500).json({ success: false, message: 'Ocurrió un error al procesar la compra' });
         }
     }
-
 }
 
 module.exports = CartController

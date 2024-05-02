@@ -1,0 +1,19 @@
+<div class="container">
+    <h1>Ticket de Compra</h1>
+    <div class="container">
+        {{#each response.cart.data}}
+        <div>
+            <h4>Producto: {{this.product.title}}</h4>
+            <h6>Cantidad: {{this.quantity}}</h6>
+        </div>
+        {{/each}}
+    </div>
+
+
+
+    <div>
+        <a href="/api/sessions/current">---Perfil---</a>
+
+        <a href="/api/products">Seguir Comprando---</a>
+    </div>
+</div>
