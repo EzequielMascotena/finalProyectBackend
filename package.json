@@ -5,7 +5,7 @@
   "main": "scr/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"nodemon src/app.js --mode prod",
+    "start": "nodemon src/app.js --mode prod",
     "dev": "nodemon src/app.js --mode dev"
   },
   "keywords": [],
@@ -28,5 +28,8 @@
     "passport-local": "^1.0.0",
     "socket.io": "^4.7.4",
     "uuid4": "^2.0.3"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1"
   }
 }

@@ -45,6 +45,8 @@ productos en tiempo real: http://localhost:8080/api/tools/realTimeProducts
 
 chat: http://localhost:8080/api/tools/chat
 
+mocking Products: http://localhost:8080/api/tools/mockingproducts
+
 ## Authors
 
 - [EzequielMascotena]

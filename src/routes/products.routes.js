@@ -17,6 +17,7 @@ routerProd.get("/:id", productController.getProductById)
 routerProd.put("/:pid", handlePolicies('admin'), productController.updateProduct);
 routerProd.delete("/:pid", handlePolicies('admin'), productController.deleteProduct)
 
+
 module.exports = routerProd;
 
 

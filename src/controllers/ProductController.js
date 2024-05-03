@@ -1,4 +1,5 @@
 const ProductServices = require('../services/productServices')
+const {generateProductsMocking} = require('../utils/mocks/products.mocks')
 
 const productServices = new ProductServices();
 
@@ -33,9 +34,9 @@ class ProductController {
             const limit = req.query.limit;
             const query = req.query.query;
             const sort = req.query.sort;
-    
+
             let request = await productServices.getProductsFromDb(page, limit, query, sort);
-            
+
             //formateo de datos para handlebars
             const formattedPayload = request.docs.map(doc => {
                 return {
@@ -47,9 +48,9 @@ class ProductController {
                     category: doc.category
                 };
             });
-    
-            const userData= req.session.user
-    
+
+            const userData = req.session.user
+
             const response = {
                 userData: userData,
                 status: "success",
@@ -62,7 +63,7 @@ class ProductController {
                 nextPage: `localhost:8080/products?limit=${request.limit}&page=${request.nextPage}`,
                 prevPage: `localhost:8080/products?limit=${request.limit}&page=${request.prevPage}`
             }
-    
+
             res.status(200).render('products.handlebars', response);
         } catch (error) {
             res.status(500).send({
@@ -73,11 +74,11 @@ class ProductController {
     }
 
     //obtener producto por id
-    async getProductById(req, res){
+    async getProductById(req, res) {
         try {
             const { id } = req.params
             let prod = await productServices.getProductByIdFromDb(id)
-    
+
             if (prod === true) {
                 console.log(prod)
                 res.status(200).send(prod)
@@ -123,6 +124,20 @@ class ProductController {
             res.status(404).send({
                 msg: resp,
                 error: err
+            });
+        }
+    }
+
+
+    async getMockingProducts(req, res) {
+        try {
+            const productosSimulados  = generateProductsMocking(100);
+
+            res.status(200).send(productosSimulados );
+        } catch (error) {
+            res.status(500).send({
+                status: "error",
+                error: `Ocurrió un error con la funcion del mocking: ${error}`
             });
         }
     }
