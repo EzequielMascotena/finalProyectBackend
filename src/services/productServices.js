@@ -1,4 +1,9 @@
 const Products = require('../dao/mongoDB/models/product.model')
+const CustomError = require('../services/errors/CustomError')
+const EErrors = require('../services/errors/errors-enum')
+
+const { nonexistentIdErrorInfo } = require('./errors/messages/nonexistentIdErrorInfo')
+
 
 class ProductServices {
     constructor(path) {
@@ -59,35 +64,50 @@ class ProductServices {
             return (resp)
         } catch (err) {
             console.log(err)
+            return { error: 'Error al buscar los productos en la BD: ' + err.message }
         }
     }
 
     //obtener producto por id
     async getProductByIdFromDb(id) {
         try {
-            let product = await Products.findById(id)
-            if (product) {
-                return ({
-                    msg: 'Producto encontrado',
-                    data: product
-                })
-            } else {
-                return ({
-                    msg: 'Producto NO encontrado',
-                    data: `el ID ${id} no existe en la Base de Datos`
+            const prods = await Products.find()
+            let product = prods.find((p) => p.id === id);
+
+            if (!product) {
+                CustomError.createError({
+                    name: "product update Error",
+                    cause: nonexistentIdErrorInfo(id),
+                    message: "Error intentando encontrar un producto",
+                    code: EErrors.DATABASE_ERROR
                 })
             }
-        } catch (err) {
-            return (`Error al buscar el producto, ${err}`)
+
+            return ({
+                msg: 'Producto encontrado',
+                data: product
+            })
+
+        } catch (error) {
+            console.log(error.cause)
+            return ({ error: error.code, message: error.message })
         }
     }
 
     // modificar un producto con id
     async updateProductOnDb(id, producto) {
         try {
-            const oldProd = await Products.findById(id);
+            const prods = await Products.find()
+            let oldProd = prods.find((p) => p.id === id);
 
-            if (oldProd) {
+            if (!oldProd) {
+                CustomError.createError({
+                    name: "product update Error",
+                    cause: nonexistentIdErrorInfo(id),
+                    message: "Error intentando modificar un producto",
+                    code: EErrors.DATABASE_ERROR
+                })
+            } else {
                 oldProd.title = producto.title;
                 oldProd.description = producto.description;
                 oldProd.price = producto.price;
@@ -99,17 +119,13 @@ class ProductServices {
                 await oldProd.save();
 
                 return {
-                    res: true,
                     msg: 'Producto modificado correctamente',
                     data: oldProd
                 };
-            } else {
-                return {
-                    res: false
-                };
             }
-        } catch (err) {
-            return (err)
+        } catch (error) {
+            console.log(error.cause)
+            return ({ error: error.code, message: error.message })
         }
     }
 
@@ -120,14 +136,22 @@ class ProductServices {
             const prods = await Products.find()
             let exist = prods.find((p) => p.id === id);
 
-            if (exist) {
-                await Products.deleteOne({ _id: id })
-                return (`El producto con el id ${id} se eliminó correctamente.`)
-            } else {
-                return (`El producto con el id ${id} es inexistente. Not found`)
+            //customError
+            if (!exist) {
+                CustomError.createError({
+                    name: "product elimination Error",
+                    cause: nonexistentIdErrorInfo(id),
+                    message: "Error intentando eliminar un producto",
+                    code: EErrors.DATABASE_ERROR
+                })
             }
-        } catch (err) {
-            return (`error al intentar eliminar producto: ${err}`)
+
+            await Products.deleteOne({ _id: id })
+            return (`El producto con el id ${id} se eliminó correctamente.`)
+
+        } catch (error) {
+            console.log(error.cause)
+            return ({ error: error.code, message: error.message })
         }
     }
 };

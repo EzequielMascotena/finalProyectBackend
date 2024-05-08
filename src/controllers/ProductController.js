@@ -1,5 +1,5 @@
-const ProductServices = require('../services/productServices')
-const {generateProductsMocking} = require('../utils/mocks/products.mocks')
+const ProductServices = require('../services/ProductServices')
+const { generateProductsMocking } = require('../utils/mocks/products.mocks')
 
 const productServices = new ProductServices();
 
@@ -79,12 +79,8 @@ class ProductController {
             const { id } = req.params
             let prod = await productServices.getProductByIdFromDb(id)
 
-            if (prod === true) {
-                console.log(prod)
-                res.status(200).send(prod)
-            } else {
-                res.status(404).send(prod)
-            }
+            res.status(200).send(prod)
+
         } catch (err) {
             console.error('Error al buscar el producto:', err);
             res.status(500).send({
@@ -97,19 +93,15 @@ class ProductController {
     async updateProduct(req, res) {
         try {
             const { pid } = req.params;
-            const conf = await productServices.updateProductOnDb(pid, req.body);
-            if (conf.res === true) {
-                res.status(200).send({
-                    msg: conf.msg,
-                    data: conf.data
-                });
-            } else {
-                res.status(404).send(`El producto con id ${pid} no existe`);
-            }
-        } catch (err) {
-            res.status(500).send({
-                error: 'Ocurrió un error al intentar modificar el producto'
+            const response = await productServices.updateProductOnDb(pid, req.body);
+
+            res.status(200).send({
+                response
             });
+        } catch (error) {
+            res.status(500).send(
+                { error: error.code, message: error.message }
+            );
         }
     }
 
@@ -120,20 +112,17 @@ class ProductController {
             const { pid } = req.params
             const resp = await productServices.deleteProductFromDb(pid)
             res.status(200).send(resp)
-        } catch (err) {
-            res.status(404).send({
-                msg: resp,
-                error: err
-            });
+        } catch (error) {
+            res.status(404).send({ error: error.code, message: error.message })
         }
     }
 
 
     async getMockingProducts(req, res) {
         try {
-            const productosSimulados  = generateProductsMocking(100);
+            const productosSimulados = generateProductsMocking(100);
 
-            res.status(200).send(productosSimulados );
+            res.status(200).send(productosSimulados);
         } catch (error) {
             res.status(500).send({
                 status: "error",
