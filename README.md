@@ -24,8 +24,7 @@ Install my-project with npm
 
 - GIT CLONE
 - NPM I
-- NPM START (para ejecutar el server)
-- NPM RUN PROD (para ejecutar el servidor en modo production)
+- NPM START (para ejecutar el server en modo production)
 - NPM RUN DEV (para ejecutar el servidor en modo development)
 
 #ENDPOINTS
@@ -46,6 +45,8 @@ productos en tiempo real: http://localhost:8080/api/tools/realTimeProducts
 chat: http://localhost:8080/api/tools/chat
 
 mocking Products: http://localhost:8080/api/tools/mockingproducts
+
+loggerTest: http://localhost:8080/loggerTest
 
 ## Authors
 

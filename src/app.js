@@ -14,6 +14,9 @@ const routerCart = require('./routes/carts.routes.js');
 const routerAuth = require('./routes/auth.routes.js');
 const routerLogin = require('./routes/login.routes.js')
 const routerSession = require('./routes/sessions.routes.js')
+const routerLogger = require('./routes/loggerTest.routes.js')
+
+const addLogger = require('./config/logger.js')
 
 const http = require('http')
 
@@ -46,9 +49,12 @@ app.engine('handlebars', handlebars.engine())
 app.set('view engine', 'handlebars')
 app.set('views', __dirname + "/views")
 
-//Middlewares
+//Json Settings
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+// Logg base
+//app.use(addLogger)
 
 //Passport y estrategias
 initializeLocalPassport()
@@ -63,6 +69,7 @@ app.use('/api/products', routerProd)
 app.use('/api/carts', routerCart)
 app.use('/api/tools', routerTools)
 app.use('/api/sessions', routerSession)
+app.use('/', routerLogger)
 
 //Socket
 const io = new Server(server)

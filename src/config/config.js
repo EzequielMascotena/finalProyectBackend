@@ -8,14 +8,17 @@ program
 
 program.parse()
 
+const enviroment = program.opts().mode
+
 //ruta de entornos
 dotenv.config({
-    path: program.opts().mode === 'dev' ? '.env.dev' : '.env.prod'
+    path: enviroment === 'dev' ? '.env.dev' : '.env.prod'
 });
 
 module.exports = {
-    persistence : process.env.PERSISTENCE,
-    port : process.env.PORT,
-    host : process.env.HOST,
-    mongoUrl : process.env.MONGOURL
+    persistence: process.env.PERSISTENCE,
+    port: process.env.PORT,
+    host: process.env.HOST,
+    mongoUrl: process.env.MONGOURL,
+    enviroment: enviroment
 }
