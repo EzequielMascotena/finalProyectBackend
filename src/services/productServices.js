@@ -4,20 +4,20 @@ const EErrors = require('../services/errors/errors-enum')
 
 const { nonexistentIdErrorInfo } = require('./errors/messages/nonexistentIdErrorInfo')
 
-
 class ProductServices {
-    constructor(path) {
+    constructor(path, logger) {
         this.path = path;
+        this.logger = logger
     }
 
     //agregar producto
-    async addProductToDb(prod) {
+    async addProductToDb(req, res, next, prod) {
         try {
             prod.status = true;
             await Products.create(prod)
             return (true)
         } catch (err) {
-            console.log(err)
+            req.logger.error(err)
             return { error: 'Error al crear el producto: ' + err.message }
         }
     }

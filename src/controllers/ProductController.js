@@ -17,8 +17,8 @@ class ProductController {
                     msg: 'Producto creado correctamente',
                     data: req.body
                 })
-            } else
-                res.status(400).send(conf)
+            } else { res.status(400).send(conf) }
+
         } catch (err) {
             console.error('Error al crear el producto:', err);
             res.status(500).send({
