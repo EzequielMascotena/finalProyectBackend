@@ -11,7 +11,7 @@ const ProductController = require('../controllers/ProductController');
 const routerProd = new Router()
 const productController = new ProductController();
 
-routerProd.post("/", productController.addProduct)
+routerProd.post("/", handlePolicies('admin'), productController.addProduct)
 routerProd.get("/", productController.getProducts);
 routerProd.get("/:id", productController.getProductById)
 routerProd.put("/:pid", handlePolicies('admin'), productController.updateProduct);

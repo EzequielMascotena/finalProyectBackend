@@ -37,7 +37,7 @@ const devLogger = winston.createLogger({
                 winston.format.simple()
             )
         }),
-        new winston.transports.File({ 
+        new winston.transports.File({
             filename: './errors.log',
             level: "error",
             format: winston.format.simple()
@@ -56,7 +56,7 @@ const prodLogger = winston.createLogger({
                 winston.format.simple()
             )
         }),
-        new winston.transports.File({ 
+        new winston.transports.File({
             filename: './errors.log',
             level: "error",
             format: winston.format.simple()
@@ -69,20 +69,10 @@ const addLogger = (req, res, next) => {
 
     if (config.enviroment === "dev") {
         req.logger = devLogger
-        req.logger.debug(`${req.method} en ${req.url} - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`);
-        req.logger.http(`${req.method} en ${req.url} - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`);
-        req.logger.info(`${req.method} en ${req.url} - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`);
-        req.logger.warning(`${req.method} en ${req.url} - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`);
-        req.logger.error(`${req.method} en ${req.url} - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`);
-        req.logger.fatal(`${req.method} en ${req.url} - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`);
     } else {
         req.logger = prodLogger
-        req.logger.info(`${req.method} en ${req.url} - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`);
-        req.logger.warning(`${req.method} en ${req.url} - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`);
-        req.logger.error(`${req.method} en ${req.url} - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`);
-        req.logger.fatal(`${req.method} en ${req.url} - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`);
     }
-    
+
     next()
 };
 

@@ -1,30 +1,10 @@
-error: GET en /loggerTest - at 10/5/2024 03:49:44
-fatal: GET en /loggerTest - at 10/5/2024 03:49:44
-error: POST en /api/products - at 14/5/2024 21:17:45
-fatal: POST en /api/products - at 14/5/2024 21:17:45
-error: POST en /api/products - at 14/5/2024 21:18:34
-fatal: POST en /api/products - at 14/5/2024 21:18:34
-error: POST en /api/products - at 14/5/2024 21:24:17
-fatal: POST en /api/products - at 14/5/2024 21:24:17
-error: undefined en undefined - at 14/5/2024 21:24:17
-fatal: undefined en undefined - at 14/5/2024 21:24:17
-error: POST en /api/products - at 14/5/2024 21:26:58
-fatal: POST en /api/products - at 14/5/2024 21:26:58
-error: POST en /api/products - at 14/5/2024 21:28:17
-fatal: POST en /api/products - at 14/5/2024 21:28:17
-error: POST en /api/products - at 14/5/2024 21:30:23
-fatal: POST en /api/products - at 14/5/2024 21:30:23
-error: POST en /api/products - at 14/5/2024 21:31:22
-fatal: POST en /api/products - at 14/5/2024 21:31:22
-error: POST en /api/products - at 14/5/2024 21:32:04
-fatal: POST en /api/products - at 14/5/2024 21:32:04
-error: POST en /api/products - at 14/5/2024 21:33:48
-fatal: POST en /api/products - at 14/5/2024 21:33:48
-error: POST en /api/products - at 14/5/2024 21:34:15
-fatal: POST en /api/products - at 14/5/2024 21:34:15
-error: POST en /api/products - at 14/5/2024 21:35:50
-fatal: POST en /api/products - at 14/5/2024 21:35:50
-error: POST en /api/products - at 14/5/2024 21:36:18
-fatal: POST en /api/products - at 14/5/2024 21:36:18
-error: POST en /api/products - at 14/5/2024 21:36:33
-fatal: POST en /api/products - at 14/5/2024 21:36:33
+
+error: Error al crear el producto: {"error":"Error al crear el producto: products validation failed: title: Path `title` is required."}
+error: POST en / - at 21/5/2024 00:43:36. Error: ReferenceError: err is not defined
+error: POST en / - at 21/5/2024 00:45:04. Error: ReferenceError: req is not defined
+error: POST en / - at 21/5/2024 00:45:29. Error: ReferenceError: req is not defined
+error: POST en / - at 21/5/2024 00:46:49. Error: ReferenceError: err is not defined
+error: POST en / - at 21/5/2024 00:47:26. Error: [object Object]
+error: POST en / al crear producto - at 21/5/2024 00:49:07. Error: [object Object]
+error: GET en /loggerTest - at 21/5/2024 00:58:12
+fatal: GET en /loggerTest - at 21/5/2024 00:58:12

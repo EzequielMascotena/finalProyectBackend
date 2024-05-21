@@ -5,19 +5,17 @@ const EErrors = require('../services/errors/errors-enum')
 const { nonexistentIdErrorInfo } = require('./errors/messages/nonexistentIdErrorInfo')
 
 class ProductServices {
-    constructor(path, logger) {
+    constructor(path) {
         this.path = path;
-        this.logger = logger
     }
 
     //agregar producto
-    async addProductToDb(req, res, next, prod) {
+    async addProductToDb(prod) {
         try {
             prod.status = true;
             await Products.create(prod)
             return (true)
         } catch (err) {
-            req.logger.error(err)
             return { error: 'Error al crear el producto: ' + err.message }
         }
     }
@@ -63,7 +61,6 @@ class ProductServices {
 
             return (resp)
         } catch (err) {
-            console.log(err)
             return { error: 'Error al buscar los productos en la BD: ' + err.message }
         }
     }
@@ -89,7 +86,6 @@ class ProductServices {
             })
 
         } catch (error) {
-            console.log(error.cause)
             return ({ error: error.code, message: error.message })
         }
     }
@@ -124,7 +120,6 @@ class ProductServices {
                 };
             }
         } catch (error) {
-            console.log(error.cause)
             return ({ error: error.code, message: error.message })
         }
     }
@@ -150,7 +145,6 @@ class ProductServices {
             return (`El producto con el id ${id} se eliminó correctamente.`)
 
         } catch (error) {
-            console.log(error.cause)
             return ({ error: error.code, message: error.message })
         }
     }

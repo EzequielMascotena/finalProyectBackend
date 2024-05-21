@@ -1,5 +1,6 @@
-const ProductServices = require('../services/ProductServices')
+const ProductServices = require('../services/productServices')
 const { generateProductsMocking } = require('../utils/mocks/products.mocks')
+const logger = require('../config/logger');
 
 const productServices = new ProductServices();
 
@@ -17,10 +18,13 @@ class ProductController {
                     msg: 'Producto creado correctamente',
                     data: req.body
                 })
-            } else { res.status(400).send(conf) }
+            } else {
+                req.logger.error(`${req.method} en ${req.url} al crear producto - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${conf}`)
+                res.status(400).send(conf)
+            }
 
         } catch (err) {
-            console.error('Error al crear el producto:', err);
+            req.logger.error(`${req.method} en ${req.url} - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${err}`)
             res.status(500).send({
                 error: 'Ocurrió un error al crear el producto'
             });
@@ -66,6 +70,7 @@ class ProductController {
 
             res.status(200).render('products.handlebars', response);
         } catch (error) {
+            req.logger.error(`${req.method} en ${req.url} al crear producto - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${error}`)
             res.status(500).send({
                 status: "error",
                 error: `Ocurrió un error al obtener los productos: ${error}`
@@ -99,6 +104,7 @@ class ProductController {
                 response
             });
         } catch (error) {
+            req.logger.error(`${req.method} en ${req.url} al crear producto - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${error}`)
             res.status(500).send(
                 { error: error.code, message: error.message }
             );
@@ -113,6 +119,7 @@ class ProductController {
             const resp = await productServices.deleteProductFromDb(pid)
             res.status(200).send(resp)
         } catch (error) {
+            req.logger.error(`${req.method} en ${req.url} al crear producto - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${error}`)
             res.status(404).send({ error: error.code, message: error.message })
         }
     }
@@ -124,6 +131,7 @@ class ProductController {
 
             res.status(200).send(productosSimulados);
         } catch (error) {
+            req.logger.error(`${req.method} en ${req.url} al crear producto - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${error}`)
             res.status(500).send({
                 status: "error",
                 error: `Ocurrió un error con la funcion del mocking: ${error}`

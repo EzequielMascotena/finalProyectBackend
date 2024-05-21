@@ -54,7 +54,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // Logg base
-//app.use(addLogger)
+app.use(addLogger)
 
 //Passport y estrategias
 initializeLocalPassport()
