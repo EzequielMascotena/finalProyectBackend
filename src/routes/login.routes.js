@@ -12,4 +12,8 @@ router.get('/register', (req, res) => {
     res.render('register')
 })
 
+router.get('/recoverPassword', (req, res) => {
+    res.render('recover')
+})
+
 module.exports = router
