@@ -13,7 +13,7 @@ const routerProd = require('./routes/products.routes.js');
 const routerCart = require('./routes/carts.routes.js');
 const routerAuth = require('./routes/auth.routes.js');
 const routerLogin = require('./routes/login.routes.js')
-const routerSession = require('./routes/sessions.routes.js')
+const routerUsers = require('./routes/users.routes.js')
 const routerLogger = require('./routes/loggerTest.routes.js')
 
 const addLogger = require('./config/logger.js')
@@ -68,7 +68,7 @@ app.use('/api/auth', routerAuth)
 app.use('/api/products', routerProd)
 app.use('/api/carts', routerCart)
 app.use('/api/tools', routerTools)
-app.use('/api/sessions', routerSession)
+app.use('/api/users', routerUsers)
 app.use('/', routerLogger)
 
 //Socket

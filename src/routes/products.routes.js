@@ -11,11 +11,11 @@ const ProductController = require('../controllers/ProductController');
 const routerProd = new Router()
 const productController = new ProductController();
 
-routerProd.post("/", handlePolicies('admin'), productController.addProduct)
+routerProd.post("/", handlePolicies('admin', 'premium'), productController.addProduct)
 routerProd.get("/", productController.getProducts);
 routerProd.get("/:id", productController.getProductById)
-routerProd.put("/:pid", handlePolicies('admin'), productController.updateProduct);
-routerProd.delete("/:pid", handlePolicies('admin'), productController.deleteProduct)
+routerProd.put("/:pid", handlePolicies('admin', 'premium'), productController.updateProduct);
+routerProd.delete("/:pid", handlePolicies('admin', 'premium'), productController.deleteProduct)
 
 
 module.exports = routerProd;

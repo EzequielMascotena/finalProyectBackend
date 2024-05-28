@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const mongoPaginate = require('mongoose-paginate-v2')
 
+const User = require('./user.model')
+
 const ProductSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -30,11 +32,36 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
+    },
+    owner: {
+        type: String,
+        default: 'admin',
+        validate: {
+            validator: async function (value) {
+                if (value === 'admin') return true;
+                const user = await User.findOne({ email: value });
+                return user && user.role === 'premium';
+            },
+            message: 'El propietario debe ser un usuario premium o "admin".'
+        },
+        ref: 'users'
     }
-})
+}, {
+    timestamps: true
+});
 
-ProductSchema.plugin(mongoPaginate)
+ProductSchema.pre('save', async function (next) {
+    if (this.owner && this.owner !== 'admin') {
+        const user = await User.findOne({ email: this.owner });
+        if (!user || user.role !== 'premium') {
+            return next(new Error('El propietario debe ser un usuario premium.'));
+        }
+    }
+    next();
+});
 
-const Products = mongoose.model('products', ProductSchema)
+ProductSchema.plugin(mongoPaginate);
 
-module.exports = Products
+const Products = mongoose.model('products', ProductSchema);
+
+module.exports = Products;

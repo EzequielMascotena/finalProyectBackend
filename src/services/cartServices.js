@@ -44,13 +44,18 @@ class CartServices {
     }
 
     //3 agregar id de producto al carrito
-    async addProductToCartOnDb(cid, pid) {
+    async addProductToCartOnDb(cid, pid, userRole, userEmail) {
         try {
             const cart = await Cart.findById(cid);
 
             // verifica la existencia del carrito
             if (!cart) {
                 return (`Error: no encontramos el Carrito con el ID ${cid}.`);
+            }
+
+            // Verifica si el usuario es premium y el producto le pertenece
+            if (userRole === 'premium' && product.owner === userEmail) {
+                return `No es posible agregar tu propio producto al carrito.`;
             }
 
             // verifica la existencia de alguna unidad del prod dentro del carrito

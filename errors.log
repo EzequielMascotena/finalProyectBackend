@@ -8,3 +8,4 @@ error: POST en / - at 21/5/2024 00:47:26. Error: [object Object]
 error: POST en / al crear producto - at 21/5/2024 00:49:07. Error: [object Object]
 error: GET en /loggerTest - at 21/5/2024 00:58:12
 fatal: GET en /loggerTest - at 21/5/2024 00:58:12
+error: POST en / al crear producto - at 28/5/2024 01:05:22. Error: [object Object]

@@ -1,6 +1,5 @@
-const ProductServices = require('../services/productServices')
+const ProductServices = require('../services/ProductServices')
 const { generateProductsMocking } = require('../utils/mocks/products.mocks')
-const logger = require('../config/logger');
 
 const productServices = new ProductServices();
 
@@ -98,13 +97,22 @@ class ProductController {
     async updateProduct(req, res) {
         try {
             const { pid } = req.params;
+            const product = await productServices.getProductByIdFromDb(pid);
+
+            // Verificar permisos del usuario
+            if (req.session.user.role !== 'admin' && product.owner !== req.session.user.email) {
+                return res.status(403).send({
+                    error: 'No tienes permiso para modificar este producto'
+                });
+            }
+
             const response = await productServices.updateProductOnDb(pid, req.body);
 
             res.status(200).send({
                 response
             });
         } catch (error) {
-            req.logger.error(`${req.method} en ${req.url} al crear producto - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${error}`)
+            req.logger.error(`${req.method} en ${req.url} al modificar producto - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${error}`)
             res.status(500).send(
                 { error: error.code, message: error.message }
             );
@@ -115,12 +123,21 @@ class ProductController {
     // borrar un prod por id
     async deleteProduct(req, res) {
         try {
-            const { pid } = req.params
-            const resp = await productServices.deleteProductFromDb(pid)
-            res.status(200).send(resp)
+            const { pid } = req.params;
+            const product = await productServices.getProductByIdFromDb(pid);
+
+            // Verificar permisos del usuario
+            if (req.session.user.role !== 'admin' && product.owner !== req.session.user.email) {
+                return res.status(403).send({
+                    error: 'No tienes permiso para borrar este producto'
+                });
+            }
+
+            const resp = await productServices.deleteProductFromDb(pid);
+            res.status(200).send(resp);
         } catch (error) {
-            req.logger.error(`${req.method} en ${req.url} al crear producto - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${error}`)
-            res.status(404).send({ error: error.code, message: error.message })
+            req.logger.error(`${req.method} en ${req.url} al borrar producto - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${error}`)
+            res.status(404).send({ error: error.code, message: error.message });
         }
     }
 

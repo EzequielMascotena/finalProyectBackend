@@ -43,10 +43,11 @@ class CartController {
 
     //3 agregar id de producto al carrito
     async addProductToCart(req, res) {
-        const { cid } = req.params
-        const { pid } = req.params
+        const { cid, pid } = req.params
         try {
-            const respuesta = await cartServices.addProductToCartOnDb(cid, pid)
+            const { role: userRole, email: userEmail } = req.session.user;
+
+            const respuesta = await cartServices.addProductToCartOnDb(cid, pid, userRole, userEmail);
             res.status(201).send(respuesta)
         } catch (err) {
             return ('Error al agregar producto al carrito:', err);
@@ -104,7 +105,7 @@ class CartController {
         }
     }
 
-// ticket
+    // ticket
     async purchase(req, res) {
         const { cid } = req.params;
         try {
