@@ -46,7 +46,7 @@ router.get('/mail', async (req, res) => {
         //enviamos el mail con el link de recuperacion.
         const mailOptions = {
             from: 'passwordRecover <ramandoprog@gmail.com>',
-            to: 'ezequielmascotena@gmail.com',
+            to: user.email,
             subject: 'Password Recover',
             text: `Ingrese en el link para crear una contraseña nueva. Si usted no solicitó el cambio ignore este correo.`,
             html: `<p>Ingrese en el <a href="${resetLink}">link</a> para crear una contraseña nueva. Si usted no solicitó el cambio ignore este correo.</p>`
