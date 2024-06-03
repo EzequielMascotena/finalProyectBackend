@@ -1,0 +1,20 @@
+paths:
+  /api/products/{pid}:
+    delete:
+      summary: Elimina un Producto por Id. (solo usuarios con rol Admin y premium)
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id del producto que desea buscar.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: el producto se elimino correctamente!
+        "404":
+          description: no encontramos el producto con el id#...
+        "500":
+          description: Error inesperado en el server. no se puede manejar el proceso.

@@ -1,0 +1,22 @@
+paths:
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Generar ticket de compra
+      tags:
+        - Cart
+      parameters:
+        - name: Cart Id
+          in: path
+          required: true
+          description: id del Carrito que desea buscar.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: operacion exitosa, ticket emitido!
+        "400":
+          description: Se envio un dato no esperado.
+        "404":
+          description: No encontramos el carrito.
+        "500":
+          description: Error inesperado en el server. no se puede manejar el proceso.

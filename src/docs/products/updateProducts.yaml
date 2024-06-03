@@ -1,0 +1,28 @@
+paths:
+  /api/products/{pid}:
+    put:
+      summary: Modificar un producto (solo usuarios con rol Admin y premium)
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id del producto que desea modificar.
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#components/schemas/Products'
+      responses:
+        "200":
+          description: El producto se modifico de manera correcta!
+        "404":
+          description: no encontramos el producto.
+        "500":
+          description: Error inesperado en el server. no se puede manejar el proceso.

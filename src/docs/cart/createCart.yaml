@@ -1,0 +1,19 @@
+paths:
+  /api/carts:
+    post:
+      summary: Crear un nuevo carrito, automatico al crear una cuenta.
+      tags:
+        - Cart
+      responses:
+        "200":
+          description: La operacion fue exitosa!
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Carts'
+        "400":
+          description: Se envio un dato no esperado.
+        "500":
+          description: Error inesperado en el server. no se puede manejar el proceso.

@@ -7,6 +7,8 @@ const passport = require('passport')
 const initializeLocalPassport = require('./config/passport/localPassport.js')
 const initializeGithubPassport = require('./config/passport/githubPassport.js')
 const handlebars = require('express-handlebars');
+const swaggerJSDoc = require('swagger-jsdoc')
+const swaggerUIExpress = require('swagger-ui-express')
 
 const routerTools = require('./routes/chat&realTimeProd.routes.js');
 const routerProd = require('./routes/products.routes.js');
@@ -37,6 +39,22 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }))
+
+// config Base Swagger para Documentar
+const swaggerOptions = {
+    definition:{
+        openapi:"3.0.1",
+        info:{
+            title: "Documentacion API FinalProyect Backend",
+            description: "Documentacion API FinalProyect Backend - para uso de Swagger"
+        }
+    },
+    apis: [`./src/docs/**/*.yaml`]
+}
+const specs = swaggerJSDoc(swaggerOptions)
+app.use("/apidocs", swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
+
+
 
 //Server HTTP
 const server = http.createServer(app)

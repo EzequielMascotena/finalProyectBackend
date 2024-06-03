@@ -1,0 +1,50 @@
+
+components:
+  schemas:
+    Products:
+      type: object
+      required: 
+        - title
+        - description
+        - price
+        - stock
+        - category
+        - code
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado de Mongo.
+        title:
+          type: string
+          description: titulo o nombre del producto
+        description:
+          type: string
+          description: Descripcion del producto.
+        price:
+          type: number
+          description: Precio del producto
+        stock:
+          type: number
+          description: unidades disponibles en stock.
+        category:
+          type: number
+          description: Categoria a la que pertenece el producto.
+        thumbnail:
+          type: array
+          description: Imagenes del producto.
+        code:
+          type: string
+          description: Codigo unico del producto.
+        owner:
+          type: string
+          description: Dueño/Usuario que creo el producto. Por default es Admin.
+      example:
+        _id: ObjectId("94c44bf4df40fafb59afb69e")
+        title: "producto prueba 19"
+        description: "este es un producto prueba"
+        price: 2019
+        thumbnail: []
+        code: "abc19"
+        stock: 19
+        category: "remeras"
+        owner: "example@example.com"

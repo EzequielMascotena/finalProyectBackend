@@ -1,0 +1,26 @@
+paths:
+  /api/products/{id}:
+    get:
+      summary: Obtiene un Producto por Id disponible en la app.
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id del producto que desea buscar.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: La operacion fue exitosa!
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Products'
+        "404":
+          description: no encontramos el producto con el id#...
+        "500":
+          description: Error inesperado en el server. no se puede manejar el proceso.
