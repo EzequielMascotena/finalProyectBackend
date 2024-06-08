@@ -9,3 +9,12 @@ error: POST en / al crear producto - at 21/5/2024 00:49:07. Error: [object Objec
 error: GET en /loggerTest - at 21/5/2024 00:58:12
 fatal: GET en /loggerTest - at 21/5/2024 00:58:12
 error: POST en / al crear producto - at 28/5/2024 01:05:22. Error: [object Object]
+error: POST en / al crear producto - at 7/6/2024 02:38:33. Error: [object Object]
+error: POST en / al crear producto - at 7/6/2024 02:39:24. Error: [object Object]
+error: POST en / al crear producto - at 7/6/2024 02:40:18. Error: [object Object]
+error: POST en / al crear producto - at 7/6/2024 02:43:48. Error: [object Object]
+error: POST en / al crear producto - at 7/6/2024 02:45:56. Error: [object Object]
+error: POST en / al crear producto - at 7/6/2024 02:47:30. Error: [object Object]
+error: POST en / al crear producto - at 7/6/2024 02:54:11. Error: [object Object]
+error: POST en / al crear producto - at 7/6/2024 02:58:05. Error: [object Object]
+error: POST en / al crear producto - at 7/6/2024 03:11:01. Error: [object Object]

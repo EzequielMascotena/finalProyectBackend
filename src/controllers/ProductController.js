@@ -20,6 +20,7 @@ class ProductController {
             } else {
                 req.logger.error(`${req.method} en ${req.url} al crear producto - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${conf}`)
                 res.status(400).send(conf)
+                console.log(conf)
             }
 
         } catch (err) {
