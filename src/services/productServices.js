@@ -13,10 +13,11 @@ class ProductServices {
     async addProductToDb(prod) {
         try {
             prod.status = true;
-            await Products.create(prod)
-            return (true)
+            await Products.create(prod);
+            return true;
         } catch (err) {
-            return { error: 'Error al crear el producto: ' + err.message }
+            console.error('Error al crear el producto:', err);
+            return false
         }
     }
 

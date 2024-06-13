@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const userDTO = require('../dao/dto/currentUser.dto')
+const UserModel = require('../dao/mongoDB/models/user.model')
 
 const router = new Router()
 
@@ -17,7 +18,7 @@ router.get('/premium/:uid', async (req, res) => {
 
     try {
         // buscamos el usuario en la BD
-        const user = await User.findById(userId);
+        const user = await UserModel.findById(userId);
 
         if (!user) {
             return res.status(404).send("Usuario no encontrado.");
@@ -32,7 +33,7 @@ router.get('/premium/:uid', async (req, res) => {
 
         await user.save();
 
-        res.status(200).send("Rol del usuario actualizado correctamente.");
+        res.status(200).send({msg: "Rol del usuario actualizado correctamente.", newRole: user.role});
     } catch (error) {
         console.error("Error al actualizar el rol del usuario:", error);
         res.status(500).send("Ocurrió un error al actualizar el rol del usuario.");

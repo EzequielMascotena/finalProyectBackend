@@ -11,25 +11,24 @@ class ProductController {
     //agregar producto
     async addProduct(req, res) {
         try {
-            const conf = await productServices.addProductToDb(req.body)
+            const conf = await productServices.addProductToDb(req.body);
             if (conf === true) {
                 res.status(201).send({
                     msg: 'Producto creado correctamente',
                     data: req.body
-                })
+                });
             } else {
-                req.logger.error(`${req.method} en ${req.url} al crear producto - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${conf}`)
-                res.status(400).send(conf)
-                console.log(conf)
+                req.logger.error(`${req.method} en ${req.url} al crear producto - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${conf}`);
+                res.status(400).send(conf);
             }
-
         } catch (err) {
-            req.logger.error(`${req.method} en ${req.url} - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${err}`)
+            req.logger.error(`${req.method} en ${req.url} - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${err}`);
             res.status(500).send({
                 error: 'Ocurrió un error al crear el producto'
             });
         }
     }
+
 
     //obtener todos los prods
     async getProducts(req, res) {

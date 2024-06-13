@@ -1,8 +1,8 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 
-const CartManagerMongo = require('../../controllers/CartController')
-const cartManager = new CartManagerMongo();
+const CartServices = require('../../services/cartServices')
+const cartServices = new CartServices();
 
 const userModel = require('../../dao/mongoDB/models/user.model')
 
@@ -20,9 +20,10 @@ const initializeLocalPassport = () => {
                 if (user) {
                     done('Error, usuario existente')
                 } else {
-                    const cart = await cartManager.addCart()
+                    const newCartId = await cartServices.addCartToDb();
+                    
                     let userNew = {
-                        cart: cart._id,
+                        cart: newCartId,
                         first_name: userData.firstName,
                         last_name: userData.lastName,
                         age: userData.age,

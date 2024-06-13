@@ -14,7 +14,6 @@ class CartServices {
             await newCart.save()
             return (newCart._id)
         } catch (err) {
-            console.log(err)
             return { error: 'Error ' + err.message }
         }
     }

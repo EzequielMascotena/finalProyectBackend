@@ -14,9 +14,9 @@ class CartController {
     async addCart(req, res) {
         try {
             const resultMessage = await cartServices.addCartToDb()
-            return (resultMessage);
+            res.status(201).send(resultMessage);
         } catch (err) {
-            return (`error al crear carrito: ${err}`);
+            res.status(500).send(`error al crear carrito: ${err}`);
         }
     }
 
@@ -90,7 +90,7 @@ class CartController {
                 res.status(404).send(`Carrito con id ${cid} o producto con id ${pid} no encontrado`)
             }
         } catch (err) {
-            return (`Error al intentar buscar el carrito, ${err}`)
+            res.status(500).send(`Error al intentar buscar el carrito, ${err}`)
         }
     }
 
@@ -99,9 +99,9 @@ class CartController {
         const { cid } = req.params
         try {
             const respuesta = await cartServices.deleteAllProductsFromCartOnDb(cid)
-            res.status(201).send(respuesta)
+            res.status(200).send(respuesta)
         } catch (err) {
-            return ('Error al agregar producto al carrito:', err);
+            res.status(500).send('Error al agregar producto al carrito:', err);
         }
     }
 
