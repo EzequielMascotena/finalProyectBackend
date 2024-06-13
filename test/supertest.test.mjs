@@ -241,14 +241,14 @@ describe('Testing App', () => {
             expect(result.body).to.be.empty
         })
 
-        /*         after(async function () {
-                    // Eliminar el carrito de la base de datos
-                    try {
-                        await mongoose.connection.db.collection('carts').deleteOne({id: createdCartId});
-                    } catch (error) {
-                        console.error('Error al eliminar el carrito de Testing:', error);
-                    }
-                }); */
+        after(async function () {
+            // Eliminar el carrito de la base de datos
+            try {
+                await mongoose.connection.db.collection('carts').deleteOne({ _id: new mongoose.Types.ObjectId(createdCartId) });
+            } catch (error) {
+                console.error('Error al eliminar el carrito de Testing:', error);
+            }
+        });
     })
 
 
