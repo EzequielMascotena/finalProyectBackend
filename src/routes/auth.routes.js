@@ -79,13 +79,13 @@ router.post('/reset-password', async (req, res) => {
         const tokenCreationTime = req.session.tokenCreationTime;
 
         if (!resetToken || !email || !tokenCreationTime) {
-            
+
             return res.status(400).send({ message: 'Token inválido o expirado' });
         }
-        
+
         //comprobamos que no haya expirado el token, dura 60 min.
         const currentTime = Date.now();
-        const elapsedTime = (currentTime - tokenCreationTime) / 1000 / 60 ;
+        const elapsedTime = (currentTime - tokenCreationTime) / 1000 / 60;
 
         if (elapsedTime > 60) {
             res.redirect(`http://localhost:${process.env.PORT}/recoverPassword`)
@@ -158,15 +158,25 @@ router.get("/callbackGithub", passport.authenticate('github', {}), async (req, r
 
 
 
-router.get("/logout", (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error("Error al cerrar sesión:", err);
-            res.status(500).send({ error: "Error al cerrar sesión" });
-        } else {
-            res.status(200).redirect("/");
+router.get("/logout", async (req, res) => {
+    try {
+        const user = await userModel.findById(req.user._conditions._id);
+        if (user) {
+            user.lastConnection = new Date();
+            await user.save();
         }
-    });
+        req.session.destroy((err) => {
+            if (err) {
+                console.error("Error al cerrar sesión:", err);
+                res.status(500).send({ error: "Error al cerrar sesión" });
+            } else {
+                res.status(200).redirect("/");
+            }
+        });
+    } catch (err) {
+        console.error('Error al cerrar sesión:', err);
+        res.status(500).send('Error al cerrar sesión.');
+    }
 });
 
 

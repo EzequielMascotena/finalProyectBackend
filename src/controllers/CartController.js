@@ -1,6 +1,6 @@
 const uuid4 = require('uuid4');
 const CartServices = require('../services/cartServices')
-const ProductServices = require('../services/ProductServices');
+const ProductServices = require('../services/productServices');
 
 const productServices = new ProductServices();
 

@@ -2,10 +2,10 @@ const passport = require('passport')
 const githubStrategy = require('passport-github2')
 const { createHash, isValidatePassword } = require('../../utils/bcrypt')
 
-const CartManagerMongo = require('../../controllers/CartController')
-const cartManager = new CartManagerMongo();
+const CartServices = require('../../services/cartServices')
+const cartServices = new CartServices();
 
-const userModel = require('../../dao/mongoDB/models/user.model')
+const userModel = require('../../dao/mongoDB/models/user.model');
 
 
 
@@ -21,17 +21,19 @@ const initializeGithubPassport = () => {
             try {
                 const existInLocal = await userModel.findOne({ email: profile.email });
                 if (existInLocal) {
-                    await userModel.updateOne({ _id: existInLocal._id }, { githubId: profile.id });  // si ya existe por Local, actualizar el usuario con datos git
-                    return done(null, existInLocal);
+                    await userModel.updateOne({ _id: existInLocal._id }, { githubId: profile.id, lastConnection: new Date() });
+                    return done(null, existInLocal);  // si ya existe por Local, actualizar el usuario con datos git
                 }
 
-                const exist = await userModel.findOne({ githubId: profile.id });
-                if (exist) {
-                    return done(null, exist) // si ya existe por git, devuelve el user e inicia sesion
+                const user = await userModel.findOne({ githubId: profile.id });
+                if (user) {
+                    user.lastConnection = new Date();
+                    await user.save();
+                    return done(null, user); // si ya existe por git, devuelve el user e inicia sesion
                 } else {
                     const password = profile.id;
                     const hashedPass = await createHash(password)
-                    const cart = await cartManager.addCart()
+                    const cart = await cartServices.addCartToDb()
                     let email = profile.email;
                     if (!email) {
                         email = profile.id + '@test.com'; // un correo electrónico si el perfil de GitHub no tiene uno

@@ -50,7 +50,11 @@ const initializeLocalPassport = () => {
                 }
                 if (!isValidatePassword(user.password, password)) {
                     done('El usuario o contraseña son incorrectos')
-                } else { done(null, user) }
+                } else {
+                    user.lastConnection = new Date();
+                    await user.save();
+                    done(null, user);
+                }
             } catch (err) {
                 done(`Error al iniciar sesion: ${err}`)
             }
