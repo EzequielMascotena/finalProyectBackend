@@ -69,12 +69,11 @@ class ProductServices {
     //obtener producto por id
     async getProductByIdFromDb(id) {
         try {
-            const prods = await Products.find()
-            let product = prods.find((p) => p.id === id);
+            const product = await Products.findById(id);
 
             if (!product) {
                 CustomError.createError({
-                    name: "product update Error",
+                    name: "product search Error",
                     cause: nonexistentIdErrorInfo(id),
                     message: "Error intentando encontrar un producto",
                     code: EErrors.DATABASE_ERROR

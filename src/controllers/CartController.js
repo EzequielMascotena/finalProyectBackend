@@ -110,7 +110,7 @@ class CartController {
         const { cid } = req.params;
         try {
             let cart = await cartServices.getCartByIdFromDb(cid);
-            let responseMessage = 'Agregue productos al carrito para continuar'
+            let responseMessage = 'Agregue productos al carrito para continuar';
 
             if (cart.data.length === 0) {
                 return res.status(400).json({ success: false, responseMessage });
@@ -130,9 +130,9 @@ class CartController {
                     const product = item.product;
                     const quantity = item.quantity;
 
-                    // Verificar si hay suficiente stock del producto
+                    // Verificar si el producto existe y si hay suficiente stock
                     const currentProduct = await productServices.getProductByIdFromDb(product._id);
-                    if (!currentProduct || currentProduct.data.stock < quantity) {
+                    if (!currentProduct || !currentProduct.data || currentProduct.data.stock < quantity) {
                         productosSinStock.push({
                             product: item.product,
                             quantityRequested: quantity
@@ -158,17 +158,17 @@ class CartController {
                 // Si todos los productos tienen stock, genera el ticket y limpia el carrito
                 if (productosSinStock.length === 0) {
                     ticketData.code = uuid4()
-                    await cartServices.purchaseOnDb(ticketData)
-                    await cartServices.deleteAllProductsFromCartOnDb(cid)
-                    responseMessage = 'Compra procesada correctamente'
+                    await cartServices.purchaseOnDb(ticketData);
+                    await cartServices.deleteAllProductsFromCartOnDb(cid);
+                    responseMessage = 'Compra procesada correctamente';
                 } else {
-                    // filtramos los productos que si tenemos stock y generamos el ticket
+                    // Filtramos los productos que sí tenemos stock y generamos el ticket
                     let checkCart = cart.data.filter(item => {
                         return !productosSinStock.some(productoSinStock => productoSinStock.product._id === item.product._id);
                     });
                     if (checkCart.length > 0) {
-                        ticketData.code = uuid4()
-                        await cartServices.purchaseOnDb(ticketData)
+                        ticketData.code = uuid4();
+                        await cartServices.purchaseOnDb(ticketData);
                     }
 
                     // Si algunos productos no pudieron procesarse debido a falta de stock los dejamos en el carrito
@@ -183,11 +183,11 @@ class CartController {
                             _id: item._id
                         };
                     });
-                    await cartServices.updateCartOnDb(cid, updatedCart)
+                    await cartServices.updateCartOnDb(cid, updatedCart);
 
                     responseMessage = 'Gracias por tu compra. Los siguientes productos no pudieron procesarse debido a falta de stock: ';
                 }
-                const response = { responseMessage, productosSinStock, ticketData }
+                const response = { responseMessage, productosSinStock, ticketData };
 
                 res.status(200).send(response);
             } else {
