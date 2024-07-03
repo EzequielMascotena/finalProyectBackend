@@ -17,7 +17,7 @@ class ProductServices {
             return true;
         } catch (err) {
             console.error('Error al crear el producto:', err);
-            return false
+            return err
         }
     }
 

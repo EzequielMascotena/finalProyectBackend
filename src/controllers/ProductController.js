@@ -1,5 +1,6 @@
-const ProductServices = require('../services/ProductServices')
+const ProductServices = require('../services/productServices')
 const { generateProductsMocking } = require('../utils/mocks/products.mocks')
+const transporter = require('../config/mail')
 
 const productServices = new ProductServices();
 
@@ -11,11 +12,17 @@ class ProductController {
     //agregar producto
     async addProduct(req, res) {
         try {
-            const conf = await productServices.addProductToDb(req.body);
+            const ownerEmail = req.session.user.email;
+            const productData = {
+                ...req.body,
+                owner: ownerEmail
+            };
+
+            const conf = await productServices.addProductToDb(productData);
             if (conf === true) {
                 res.status(201).send({
                     msg: 'Producto creado correctamente',
-                    data: req.body
+                    data: productData
                 });
             } else {
                 req.logger.error(`${req.method} en ${req.url} al crear producto - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${conf}`);
@@ -126,14 +133,34 @@ class ProductController {
             const { pid } = req.params;
             const product = await productServices.getProductByIdFromDb(pid);
 
+            const user = req.session.user
+            
             // Verificar permisos del usuario
-            if (req.session.user.role !== 'admin' && product.owner !== req.session.user.email) {
+            if (user.role !== 'admin' && product.data.owner !== user.email) {
                 return res.status(403).send({
                     error: 'No tienes permiso para borrar este producto'
                 });
             }
 
             const resp = await productServices.deleteProductFromDb(pid);
+
+            if (user.role === 'premium') {
+                const mailOptions = {
+                    from: `DeletedProduct <${process.env.EMAIL_USER}>`,
+                    to: user.email,
+                    subject: 'Producto Eliminado',
+                    text: `Hola ${user.first_name},\n\nTu producto "${product.title}" ha sido eliminado del catálogo.\n\nSaludos,\nEl equipo de ecommerce`
+                };
+
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        req.logger.error(`Error al enviar correo: ${error}`);
+                    } else {
+                        req.logger.info(`Correo enviado: ${info.response}`);
+                    }
+                });
+            }
+
             res.status(200).send(resp);
         } catch (error) {
             req.logger.error(`${req.method} en ${req.url} al borrar producto - at ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}. Error: ${error}`)

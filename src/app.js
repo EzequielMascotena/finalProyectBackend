@@ -6,7 +6,8 @@ const Database = require('./dao/mongoDB/db.js')
 const passport = require('passport')
 const initializeLocalPassport = require('./config/passport/localPassport.js')
 const initializeGithubPassport = require('./config/passport/githubPassport.js')
-const handlebars = require('express-handlebars');
+const exphbs = require('express-handlebars');
+const handlebars = require('handlebars');
 const swaggerJSDoc = require('swagger-jsdoc')
 const swaggerUIExpress = require('swagger-ui-express')
 
@@ -63,9 +64,25 @@ const server = http.createServer(app)
 app.use(express.static(__dirname + '/public'))
 
 //Motor de plantillas
-app.engine('handlebars', handlebars.engine())
-app.set('view engine', 'handlebars')
-app.set('views', __dirname + "/views")
+handlebars.registerHelper('isRole', function(role, expectedRole) {
+    return role === expectedRole;
+});
+
+const hbs = exphbs.create({
+    helpers: {
+        isRole: function (role, expectedRole) {
+            return role === expectedRole;
+        }
+    },
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true
+    }
+});
+
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+app.set('views', __dirname + "/views");
 
 //Json Settings
 app.use(express.json())
