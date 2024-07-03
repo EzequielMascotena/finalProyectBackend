@@ -149,7 +149,8 @@ class UserManager {
     async getAllUsers(req, res) {
         try {
             const users = await UserModel.find({}, 'first_name last_name email role');
-            res.status(200).send(users);
+            const usersDTO = users.map(user => new CurrentUserDTO(user));
+            res.status(200).send(usersDTO);
         } catch (error) {
             console.error("Error al obtener todos los usuarios:", error);
             res.status(500).send("Ocurrió un error al obtener los usuarios.");
@@ -157,7 +158,7 @@ class UserManager {
     }
 
     async deleteInactiveUsers(req, res) {
-        const days = req.query.days || 2; 
+        const days = req.query.days || 2;
         const inactiveSince = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
 
         try {
