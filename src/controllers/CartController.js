@@ -55,15 +55,15 @@ class CartController {
     }
 
     async deleteProductFromCart(req, res) {
-        const { cid } = req.params
-        const { pid } = req.params
+        const { cid, pid } = req.params;
         try {
-            const respuesta = await cartServices.deleteProductFromCartOnDb(cid, pid)
-            res.status(201).send(respuesta)
+            const respuesta = await cartServices.deleteProductFromCartOnDb(cid, pid);
+            res.status(200).json(respuesta);
         } catch (err) {
-            return ('Error al agregar producto al carrito:', err);
+            res.status(500).json({ message: 'Error al eliminar producto del carrito', error: err.message });
         }
     }
+    
 
     async updateCart(req, res) {
         const { cid } = req.params
@@ -99,9 +99,9 @@ class CartController {
         const { cid } = req.params
         try {
             const respuesta = await cartServices.deleteAllProductsFromCartOnDb(cid)
-            res.status(200).send(respuesta)
+            res.status(200).json(respuesta)
         } catch (err) {
-            res.status(500).send('Error al agregar producto al carrito:', err);
+            res.status(500).json('Error al agregar producto al carrito:', err);
         }
     }
 

@@ -50,3 +50,64 @@ async function purchase(cid) {
         console.error('Error al realizar la compra:', error);
     }
 }
+
+
+
+async function deleteProductFromCart(cartId, productId) {
+    try {
+        const response = await fetch(`/api/carts/${cartId}/product/${productId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            alert('Producto eliminado del carrito correctamente');
+            location.reload();
+        } else {
+            const errorData = await response.json();
+            alert(errorData.message || 'Error al eliminar el producto.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Ocurrió un error al intentar eliminar el producto.');
+    }
+}
+
+async function deleteAllProductsFromCart(cartId) {
+    try {
+        const response = await fetch(`/api/carts/${cartId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            alert('Todos los productos fueron eliminados del carrito correctamente');
+            location.reload();
+        } else {
+            const errorData = await response.json();
+            alert(errorData.message || 'Error al limpiar el carrito.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Ocurrió un error al intentar limpiar el carrito.');
+    }
+}
+
+
+/* --funcion para cerrar el modal de boostrap-- */
+
+function closeModal() {
+    var modal = document.getElementById('staticBackdrop');
+    var modalInstance = bootstrap.Modal.getInstance(modal);
+    modalInstance.hide();
+
+    // Eliminar el backdrop manualmente
+    var backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+        backdrop.parentNode.removeChild(backdrop);
+    }
+}
