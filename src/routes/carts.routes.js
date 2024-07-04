@@ -16,22 +16,22 @@ const cartController = new CartController();
 routerCart.post("/", cartController.addCart);
 
 //obtener carrito por id
-routerCart.get("/:cid", handlePolicies('user'), cartController.getCartById);
+routerCart.get("/:cid", handlePolicies('user', 'premium'), cartController.getCartById);
 
 // agregar productos al carts
-routerCart.post("/:cid/product/:pid", handlePolicies('user'), cartController.addProductToCart)
+routerCart.post("/:cid/product/:pid", handlePolicies('user', 'premium'), cartController.addProductToCart)
 
 // eliminar un producto del carrito
-routerCart.delete("/:cid/product/:pid", handlePolicies('user'), cartController.deleteProductFromCart)
+routerCart.delete("/:cid/product/:pid", handlePolicies('user', 'premium'), cartController.deleteProductFromCart)
 
 //actualiza el carrito
-routerCart.put("/:cid", handlePolicies('user'), cartController.updateCart)
+routerCart.put("/:cid", handlePolicies('user', 'premium'), cartController.updateCart)
 
 //actualiza la cant de un prod
-routerCart.put("/:cid/product/:pid", handlePolicies('user'), cartController.updateQtity)
+routerCart.put("/:cid/product/:pid", handlePolicies('user', 'premium'), cartController.updateQtity)
 
 // eliminar todos los productos del carrito
-routerCart.delete("/:cid", handlePolicies('user'), cartController.deleteAllProductsFromCart)
+routerCart.delete("/:cid", handlePolicies('user', 'premium'), cartController.deleteAllProductsFromCart)
 
 // ticket de compra
 routerCart.post("/:cid/purchase", cartController.purchase)

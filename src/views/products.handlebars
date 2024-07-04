@@ -1,12 +1,14 @@
 <div class="container">
     <h2> Bienvenido {{ userData.first_name }} {{ userData.last_name }}!</h2>
-    <div>
-        tipo de cuenta: {{userData.role}}
-    </div>
-    <div id="userData" data-cart={{ userData.cart }}></div>
-    <div>
-        <a href="/api/users/current">---Perfil---</a>
-        <a href="/api/carts/{{ userData.cart }}">CARRITO---</a>
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            Tipo de cuenta: {{ userData.role }}
+        </div>
+        <div id="userData" data-cart="{{ userData.cart }}"></div>
+        <div class="d-flex">
+            <button onclick="window.location.href = '/api/users/current'" type="button" class="btn btn-primary me-2">Perfil</button>
+            <button onclick="window.location.href = '/api/carts/{{ userData.cart }}'" type="button" class="btn btn-success">Carrito</button>
+        </div>
     </div>
 </div>
 

@@ -1,3 +1,4 @@
+
 async function addToCart(pid) {
     try {
         const userDataElement = document.getElementById('userData');
@@ -7,14 +8,33 @@ async function addToCart(pid) {
         });
 
         if (response.ok) {
-            console.log(`Producto ${pid} agregado al carrito correctamente.`);
+            showSuccessAlert(`Producto ${pid} agregado al carrito correctamente.`);
         } else {
-            console.error('Error al agregar producto al carrito:', response.statusText);
+            throw new Error(`Error al agregar producto al carrito: ${response.statusText}`);
         }
     } catch (error) {
-        console.error('Error al agregar producto al carrito:', error);
+        showErrorAlert(error.message);
     }
 }
 
+function showSuccessAlert(message) {
+    Swal.fire({
+        icon: 'success',
+        title: 'Éxito!',
+        text: message,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000
+    });
+}
 
-
+function showErrorAlert(message) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: message,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000
+    });
+}

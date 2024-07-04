@@ -12,7 +12,9 @@
                 tipo de cuenta: {{this.role}}
             </div>
         </div>
-        <a href="/api/auth/logout">Logout---</a>
-        <a href="/api/products">Seguir Comprando---</a>
+        <div>
+            <button onclick="window.location.href = '/api/auth/logout'" type="button" class="btn btn-danger">Logout</button>
+            <button onclick="window.location.href = '/api/products'" type="button" class="btn btn-success">Seguir Comprando</button>
+        </div>
     </div>
 </div>

@@ -43,12 +43,21 @@ class CartController {
 
     //3 agregar id de producto al carrito
     async addProductToCart(req, res) {
-        const { cid, pid } = req.params
-        try {
+        const { cid, pid } = req.params;
+
+        try{
+            const prodData = await productServices.getProductByIdFromDb(pid);
+            const productOwner = prodData.data.owner
+
             const { role: userRole, email: userEmail } = req.session.user;
 
-            const respuesta = await cartServices.addProductToCartOnDb(cid, pid, userRole, userEmail);
-            res.status(201).send(respuesta)
+            const respuesta = await cartServices.addProductToCartOnDb(cid, pid, userRole, userEmail, productOwner);
+
+            if(respuesta === "Error al agregar producto al carrito: No es posible agregar tu propio producto al carrito."){
+                res.status(500).send(respuesta)
+            }else{
+                res.status(201).send(respuesta)
+            }
         } catch (err) {
             return ('Error al agregar producto al carrito:', err);
         }

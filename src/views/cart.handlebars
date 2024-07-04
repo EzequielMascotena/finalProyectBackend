@@ -6,7 +6,12 @@
             <div class="card-body d-flex justify-content-between align-items-center">
                 <div>
                     <h4 class="card-title mb-0">Producto: {{this.product.title}}</h4>
+                </div>
+                <div>
                     <h6 class="card-subtitle mb-2 text-muted">Cantidad: {{this.quantity}}</h6>
+                </div>
+                <div class="card-subtitle mb-2 text-muted">
+                    <h6>Precio Unitario: $ {{this.product.price}}</h6>
                 </div>
                 <button onclick="deleteProductFromCart('{{...response.userData}}', '{{this.product._id}}')" type="button" class="btn btn-danger">Eliminar</button>
             </div>
@@ -16,11 +21,11 @@
 
     <div class="d-flex justify-content-between align-items-center mt-3">
         <button onclick="deleteAllProductsFromCart('{{response.userData}}')" type="button" class="btn btn-danger">Limpiar Carrito</button>
-        <button onclick="purchase('{{response.userData}}')" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Comprar</button>
+        <button onclick="purchase('{{response.userData}}')" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Comprar</button>
 
         <div>
-            <a href="/api/users/current" class="btn btn-link">Perfil</a>
-            <a href="/api/products" class="btn btn-link">Seguir Comprando</a>
+            <button onclick="window.location.href = '/api/users/current'" type="button" class="btn btn-secondary">Perfil</button>
+            <button onclick="window.location.href = '/api/products'" type="button" class="btn btn-secondary">Seguir Comprando</button>
         </div>
     </div>
 
